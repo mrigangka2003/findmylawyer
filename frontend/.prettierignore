@@ -1,0 +1,6 @@
+/node_modules
+tailwind.config.js
+
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
