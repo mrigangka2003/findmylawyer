@@ -1,5 +1,5 @@
-import { Scale, Shield, Users, Award, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {ArrowRight, Scale, Shield, Users, Award, ChevronRight } from "lucide-react";
 
 const HeroSection = () => {
     const navigate = useNavigate();
@@ -12,7 +12,6 @@ const HeroSection = () => {
                 <Scale size={600} className="text-white" strokeWidth={0.5} />
             </div>
 
-            {/* Background Icons - kept same */}
             <div className="absolute top-3 left-20 opacity-10">
                 <Shield size={100} className="text-white animate-pulse" />
             </div>
@@ -23,7 +22,6 @@ const HeroSection = () => {
                 <Award size={80} className="text-white animate-pulse" />
             </div>
 
-            {/* Hero Content */}
             <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
                 <div className="mb-3">
                     <blockquote className="text-2xl md:text-3xl lg:text-4xl font-light text-white/90 italic leading-relaxed mb-2">
@@ -34,7 +32,6 @@ const HeroSection = () => {
                     </cite>
                 </div>
 
-                {/* Heading and Paragraphs unchanged */}
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
                     <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent inline-block animate-fade-in-up">
                         Find Your
@@ -50,7 +47,6 @@ const HeroSection = () => {
                     Professional legal representation when you need it most.
                 </p>
 
-                {/* Icon Circle */}
                 <div className="mb-16 relative">
                     <div className="w-24 h-24 mx-auto mb-8 animate-float">
                         <div className="w-full h-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center">
@@ -68,12 +64,20 @@ const HeroSection = () => {
                 {/* Buttons */}
                 <div className="space-y-4 animate-fade-in-up-delay-4">
                     <button className="bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white font-bold px-12 py-4 rounded-2xl text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl mr-4 group">
-                        <span className="group-hover:animate-pulse">
-                            Get Started Now
-                        </span>
+                        <a href="#topLaw" className="flex">
+                            <span className="group-hover:animate-pulse">
+                                Book Appointment
+                            </span>
+                            <ArrowRight className="ml-1"/>
+                        </a>
                     </button>
                     <button className="bg-transparent border-2 border-white/30 hover:border-white/50 text-white font-semibold px-12 py-4 rounded-2xl text-xl transition-all duration-300 hover:scale-105 relative overflow-hidden group">
-                        <span onClick={()=>(navigate("/about"))} className="relative z-10">Learn More</span>
+                        <span
+                            onClick={() => navigate("/about")}
+                            className="relative z-10"
+                        >
+                            Learn More
+                        </span>
                         <div className="absolute inset-0 bg-white/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
                 </div>

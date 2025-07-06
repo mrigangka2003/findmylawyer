@@ -16,7 +16,7 @@ import {
 function App() {
 
   return (
-    <div className="bg-gradient-to-br from-black via-zinc-900 to-black">
+    <div>
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home/>}/>

@@ -17,11 +17,11 @@ const SpecialityMenu = () => {
                     {specialityData.map((speciality) => {
                         const formattedName = speciality.specialityName
                             .toLowerCase()
-                            .replace(/\s+/g, "");
+                            .split(/\s+/)[0];
 
                         return (
                             <Link
-                                onClick={()=>(scrollTo(0,0))}
+                                onClick={() => scrollTo(0, 0)}
                                 key={formattedName}
                                 to={`/lawyers/${formattedName}`}
                                 className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-full transition text-sm sm:text-base"
