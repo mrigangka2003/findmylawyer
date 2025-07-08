@@ -11,6 +11,7 @@ import {
   Login,
   Appointment
 } from "./pages"
+import Footer from "./components/Footer"
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/my-appointments" element={<MyAppointments/>}/>
         <Route path="/appointment/:lawyerId" element={<Appointment/>}/>
       </Routes>
+      <Footer/>
     </div>
   )
 }
