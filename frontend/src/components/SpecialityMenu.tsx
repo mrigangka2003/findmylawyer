@@ -16,8 +16,9 @@ const SpecialityMenu = () => {
                 <div className="flex flex-wrap justify-center gap-3">
                     {specialityData.map((speciality) => {
                         const formattedName = speciality.specialityName
-                            .toLowerCase()
-                            .split(/\s+/)[0];
+                            .toLowerCase() 
+                            .split(/\s+/) 
+                            .join('-');   
 
                         return (
                             <Link
