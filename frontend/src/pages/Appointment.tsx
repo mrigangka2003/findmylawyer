@@ -3,11 +3,22 @@ import { useEffect, useState } from "react";
 import { Info, IndianRupee } from "lucide-react";
 
 import { useLawyerStore } from "../store/useLawyerStore";
+import { RelatedLawyers } from "../components";
 
 const Appointment = () => {
     const { lawyerId } = useParams();
     const lawyers = useLawyerStore((state) => state.lawyers);
     type Lawyer = (typeof lawyers)[number];
+
+    const daysOfWeek: Array<string> = [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+    ];
 
     const [lawyerInfo, setLawyerInfo] = useState<Lawyer | null>(null);
     const [lawSlots, setLawSlots] = useState<Array<any>>([]);
@@ -22,28 +33,54 @@ const Appointment = () => {
         }
     };
 
-    const getAvailableSlots = async() => {
-      setLawSlots([]);
+    const getAvailableSlots = async () => {
+        setLawSlots([]);
 
-      //getting current data
-      let today = new Date();
-      
-      for(let i = 0 ; i<7 ; i++){
-        let  currentDate = new Date(today);
-        currentDate.setDate(today.getDate()+i);
-        
+        // getting current Date
+        let today = new Date();
 
-        //setting end time of the date with index
-        let endTime = new Date();
-        endTime.setDate(today.getDate()+1);
-        endTime.setHours(21,0,0,0);
+        for (let i = 0; i < 7; i++) {
+            //getting date with index ;
+            let currentDate = new Date(today);
+            currentDate.setDate(today.getDate() + i);
 
-        //settig hours
+            let endTime = new Date();
+            endTime.setDate(today.getDate() + i);
+            endTime.setHours(20, 0, 0, 0);
 
-        if(today.getDate()===currentDate.getDate()){
+            //setting hours
+            if (today.getDate() === currentDate.getDate()) {
+                currentDate.setHours(
+                    currentDate.getHours() > 10
+                        ? currentDate.getHours() + 1
+                        : 10
+                );
+                currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
+            } else {
+                currentDate.setHours(10);
+                currentDate.setMinutes(0);
+            }
 
+            let timeSlots = [];
+
+            while (currentDate < endTime) {
+                let formattedTime = currentDate.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+
+                //add slot to array
+
+                timeSlots.push({
+                    datetime: new Date(currentDate),
+                    time: formattedTime,
+                });
+
+                // increment current time by 30 minutes
+                currentDate.setMinutes(currentDate.getMinutes() + 30);
+            }
+            setLawSlots((prev) => [...prev, timeSlots]);
         }
-      }
     };
 
     useEffect(() => {
@@ -54,6 +91,9 @@ const Appointment = () => {
         getAvailableSlots();
     }, [lawyerInfo]);
 
+    useEffect(() => {
+        console.log(lawSlots);
+    }, [lawSlots]);
 
     return (
         lawyerInfo && (
@@ -106,6 +146,80 @@ const Appointment = () => {
                         </p>
                     </div>
                 </div>
+                {/* Booking Slots */}
+                <div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-white">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-1 h-6 bg-white rounded-full"></div>
+                        <p className="text-xl font-semibold tracking-tight">
+                            Booking Slots
+                        </p>
+                    </div>
+
+                    <div className="flex gap-4 items-center w-full overflow-x-scroll mt-4 pb-2 scrollbar-hide">
+                        {lawSlots.length &&
+                            lawSlots.map((item, index) => (
+                                <div
+                                    onClick={() => setSlotIndex(index)}
+                                    className={`text-center py-5 px-4 min-w-[80px] rounded-2xl cursor-pointer transition-all duration-300 border-2 hover:scale-105 flex-shrink-0 ${
+                                        slotIndex === index
+                                            ? "bg-white text-black border-white shadow-lg shadow-white/10"
+                                            : "border-gray-700 text-white hover:border-gray-500 bg-gray-900/30"
+                                    }`}
+                                    key={index}
+                                >
+                                    <p
+                                        className={`text-xs font-medium mb-1 ${
+                                            slotIndex === index
+                                                ? "text-gray-600"
+                                                : "text-gray-400"
+                                        }`}
+                                    >
+                                        {item[0] &&
+                                            daysOfWeek[
+                                                item[0].datetime.getDay()
+                                            ]}
+                                    </p>
+                                    <p
+                                        className={`text-lg font-bold ${
+                                            slotIndex === index
+                                                ? "text-black"
+                                                : "text-white"
+                                        }`}
+                                    >
+                                        {item[0] && item[0].datetime.getDate()}
+                                    </p>
+                                </div>
+                            ))}
+                    </div>
+
+                    <div className="flex items-center gap-3 w-full overflow-x-scroll mt-6 scroll-smooth pb-2 scrollbar-hide">
+                        {lawSlots?.[slotIndex]?.map((item: any, index: any) => (
+                            <p
+                                onClick={() => setSlotTime(item.time)}
+                                className={`text-sm font-medium flex-shrink-0 px-6 py-3 rounded-xl cursor-pointer transition-all duration-300 border-2 hover:scale-105 ${
+                                    item.time === slotTime
+                                        ? "bg-white text-black border-white shadow-lg shadow-white/10"
+                                        : "text-gray-300 border-gray-700 hover:border-gray-500 bg-gray-900/30 hover:text-white"
+                                }`}
+                                key={index}
+                            >
+                                {item.time.toLowerCase()}
+                            </p>
+                        ))}
+                    </div>
+                    <button className="bg-white text-black font-semibold px-8 py-4 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 hover:scale-105 shadow-lg shadow-white/10 tracking-tight mt-8">
+                        Book an Appointment
+                    </button>
+                </div>
+
+                {/* Related Lawyers */}
+
+                {lawyerId && lawyerInfo?.speciality && (
+                    <RelatedLawyers
+                        lawyerId={lawyerId}
+                        speciality={lawyerInfo.speciality}
+                    />
+                )}
             </div>
         )
     );
