@@ -50,7 +50,7 @@ const lawyers: Lawyer[] = [
         degree: "BALLB",
         experience: "2 years",
         about: "Mr. Samarjyoti is a dynamic young legal mind with unmatched experience in handling diverse client needs with precision and professionalism.",
-        fees: 20,
+        fees: 4000,
         address: { line1: "Kolkata", line2: "Tripura" },
     },
     {
@@ -61,7 +61,7 @@ const lawyers: Lawyer[] = [
         degree: "LLM",
         experience: "3 years",
         about: "Priya specializes in corporate compliance and contract law with a track record of helping startups scale legally.",
-        fees: 30,
+        fees: 2500,
         address: { line1: "Mumbai", line2: "Maharashtra" },
     },
     {
@@ -72,7 +72,7 @@ const lawyers: Lawyer[] = [
         degree: "BALLB",
         experience: "5 years",
         about: "Rahul is known for his empathetic yet strategic approach to family law cases, ensuring client satisfaction.",
-        fees: 25,
+        fees: 2500,
         address: { line1: "Delhi", line2: "New Delhi" },
     },
     {
@@ -83,7 +83,7 @@ const lawyers: Lawyer[] = [
         degree: "LLB",
         experience: "4 years",
         about: "Neha provides expert legal guidance in trademarks, patents, and copyright registration.",
-        fees: 35,
+        fees: 3500,
         address: { line1: "Bengaluru", line2: "Karnataka" },
     },
     {
@@ -94,7 +94,7 @@ const lawyers: Lawyer[] = [
         degree: "BALLB",
         experience: "6 years",
         about: "Arjun has extensive courtroom experience, having handled numerous high-stakes civil disputes.",
-        fees: 40,
+        fees: 4000,
         address: { line1: "Chennai", line2: "Tamil Nadu" },
     },
     {
@@ -105,7 +105,7 @@ const lawyers: Lawyer[] = [
         degree: "LLM",
         experience: "3 years",
         about: "Riya is a passionate advocate for sustainability, representing NGOs and public interest cases.",
-        fees: 22,
+        fees: 2002,
         address: { line1: "Kolkata", line2: "West Bengal" },
     },
     {
@@ -116,7 +116,7 @@ const lawyers: Lawyer[] = [
         degree: "LLB",
         experience: "4 years",
         about: "Manav simplifies complex tax regulations for clients, ensuring compliance and peace of mind.",
-        fees: 28,
+        fees: 2800,
         address: { line1: "Ahmedabad", line2: "Gujarat" },
     },
     {
@@ -127,7 +127,7 @@ const lawyers: Lawyer[] = [
         degree: "BALLB",
         experience: "2 years",
         about: "Sneha is a tech-savvy legal expert helping clients navigate digital legal issues and cyber crimes.",
-        fees: 18,
+        fees: 1800,
         address: { line1: "Pune", line2: "Maharashtra" },
     },
     {
@@ -138,7 +138,7 @@ const lawyers: Lawyer[] = [
         degree: "LLB",
         experience: "5 years",
         about: "Vikram handles land disputes, title verification, and builder litigation with deep expertise.",
-        fees: 32,
+        fees: 3200,
         address: { line1: "Hyderabad", line2: "Telangana" },
     },
     {
@@ -149,7 +149,7 @@ const lawyers: Lawyer[] = [
         degree: "LLM",
         experience: "7 years",
         about: "Anjali has a deep understanding of constitutional rights and represents PILs in High Court.",
-        fees: 45,
+        fees: 4500,
         address: { line1: "Bhopal", line2: "Madhya Pradesh" },
     },
 ];
