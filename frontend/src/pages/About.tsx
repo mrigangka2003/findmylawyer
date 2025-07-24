@@ -64,7 +64,7 @@ const About = () => {
                         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700">
                             <div className="aspect-square bg-gradient-to-br from-white/10 to-gray-400/10 rounded-xl flex items-center justify-center overflow-hidden">
                                 <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBdCKicCoioRWOfV0udOrpzMXDgp8oioUm4g&s"
+                                    src="https://img.freepik.com/premium-photo/legal-teamwork-with-diverse-group-lawyers-col_198067-200974.jpg"
                                     alt="Lawyer Team"
                                     className="object-cover w-full h-full rounded-xl"
                                 />
