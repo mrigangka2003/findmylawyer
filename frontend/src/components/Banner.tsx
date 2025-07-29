@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import LadyOfJustice from "../data/images/lady_justice-removebg.png";
+import LadyOfJustice from "../data/images/lady_justice_removebg.png";
 
 const Banner = () => {
     const navigate = useNavigate();
