@@ -9,7 +9,7 @@ type MenuItem = {
 
 const NavBar = () => {
     const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -140,21 +140,18 @@ const NavBar = () => {
                                             ? 'text-white text-xl font-bold tracking-wide'
                                             : 'text-white/80 text-xl hover:text-white transition duration-300 tracking-wide'
                                     }
-                                    onClick={() => setShowUserMenu(false)} // Hide menu on nav click
+                                    onClick={() => setShowUserMenu(false)}
                                 >
                                     {item.label.toUpperCase()}
                                 </NavLink>
                             ))}
-                            <button
-                                className="px-6 py-3 border border-white/30 text-white rounded-xl bg-white/10 hover:bg-white/20 transition"
-                                onClick={() => {
-                                    setIsAuthenticated(false);
-                                    setShowUserMenu(false);
-                                    navigate('/');
-                                }}
-                            >
-                                LOGOUT
-                            </button>
+
+                            <X
+                                height={40}
+                                width={40}
+                                className="text-white cursor-pointer bg-red-600 rounded-md p-1 sm:hidden"
+                                onClick={() => setShowUserMenu(false)}
+                            />
                         </div>
                     )}
                 </div>
