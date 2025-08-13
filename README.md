@@ -44,10 +44,6 @@ A modern full-stack web application to connect clients with lawyers efficiently.
 ├── index.ts # Express server entry
 ├── ...
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 🔧 Environment Variables

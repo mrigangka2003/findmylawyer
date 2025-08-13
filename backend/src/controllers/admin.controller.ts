@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
+import jwt from 'jsonwebtoken'
+
 import { lawyerModel } from "../models";
+import { ADMIN_EMAIL, ADMIN_PASSWORD, JWT_SECRET } from "../constants";
 
 const addLawyer = async (req: Request, res: Response) => {
     try {
@@ -84,6 +87,27 @@ const addLawyer = async (req: Request, res: Response) => {
     }
 };
 
+//api for admin login
 
+const loginAdmin = async(req:Request,res:Response)=>{
+    try {
+        const {email,password} = req.body ;
 
-export { addLawyer };
+        if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD ){
+            
+            const token = jwt.sign(email+password,JWT_SECRET);
+            res.json({success:true,token});
+
+        }else{
+            res.json({
+                success:false,
+                message:"Invalid Credentials"
+            })
+        }
+    } catch (error:any) {
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export { addLawyer ,loginAdmin};

@@ -1,7 +1,8 @@
-import { addLawyer } from "./admin.controller";
+import { addLawyer,loginAdmin } from "./admin.controller";
 
 
 
 export {
-    addLawyer
+    addLawyer,
+    loginAdmin
 }

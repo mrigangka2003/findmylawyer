@@ -10,7 +10,9 @@ const DB_NAME :string = "findmylawyer";
 const ClOUDINARY_NAME = process.env.CLOUDINARY_NAME as string;
 const ClOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY as string;
 const ClOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY as string;
-
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL as string;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD as string
+const JWT_SECRET = process.env.JWT_SECRET as string
 
 export {
     PORT,
@@ -18,5 +20,8 @@ export {
     MONGODB_URI,
     ClOUDINARY_NAME,
     ClOUDINARY_API_KEY,
-    ClOUDINARY_SECRET_KEY
+    ClOUDINARY_SECRET_KEY,
+    ADMIN_EMAIL,
+    ADMIN_PASSWORD,
+    JWT_SECRET
 }
