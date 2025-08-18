@@ -7,7 +7,7 @@ import authAdmin from "../middleware/AuthAdmin";
 const adminRouter = Router();
 
 adminRouter.post('/add-lawyer',authAdmin,upload.single('image'),addLawyer);
-adminRouter.post('/login',authAdmin,loginAdmin);
+adminRouter.post('/login',loginAdmin);
 
 
 export default adminRouter;
