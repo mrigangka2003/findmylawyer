@@ -39,6 +39,16 @@ const addLawyer = async (req: Request, res: Response) => {
             return res.status(400).json({ success: false, message: "Missing details" });
         }
 
+
+        let parsedAddress = address;
+        try {
+            if (typeof address === "string") {
+                parsedAddress = JSON.parse(address);
+            }
+        } catch (err) {
+            return res.status(400).json({ success: false, message: "Invalid address format" });
+        }
+
         if (!validator.isEmail(email)) {
             return res.status(400).json({ success: false, message: "Invalid email format" });
         }
@@ -71,7 +81,7 @@ const addLawyer = async (req: Request, res: Response) => {
             experience,
             about,
             fees: Number(fees),
-            address,
+            address:parsedAddress,
             available: true,
             date: Date.now(),
             slots_booked: {},
@@ -110,4 +120,17 @@ const loginAdmin = async(req:Request,res:Response)=>{
     }
 }
 
-export { addLawyer ,loginAdmin};
+//api to get all lawyers list
+
+const allLawyers = async(req:Request,res:Response)=>{
+    try {
+        const lawyers = await lawyerModel.find({}).select('-password')
+        res.json({success:true,lawyers})
+
+    } catch (error:any) {
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export { addLawyer ,loginAdmin, allLawyers };

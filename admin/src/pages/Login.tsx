@@ -31,7 +31,6 @@ const Login = () => {
                 if(response.data.success){
                     localStorage.setItem('adminToken',response.data.token);
                     setAdminToken(response.data.token);
-                    console.log("response:", response.data.token);
                 }else{
                     toast.error(response.data.message)
                 }

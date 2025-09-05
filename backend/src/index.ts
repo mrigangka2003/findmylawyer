@@ -7,6 +7,8 @@ import connectDb from "./config/db";
 import connectCloudinary from "./config/cloudinary";
 
 const app = express();
+
+//connect cloudinary
 connectCloudinary();
 
 app.use(express.json());

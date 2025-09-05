@@ -9,5 +9,4 @@ const connectCloudinary = async()=>{
         api_secret:ClOUDINARY_SECRET_KEY
     })
 }
-
 export default connectCloudinary ;
