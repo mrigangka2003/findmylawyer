@@ -8,7 +8,7 @@ const adminRouter = Router();
 
 adminRouter.post('/add-lawyer',authAdmin,upload.single('image'),addLawyer);
 adminRouter.post('/login',loginAdmin);
-adminRouter.get('/all-lawyers',authAdmin,allLawyers);
+adminRouter.post('/all-lawyers',authAdmin,allLawyers);
 
 
 export default adminRouter;

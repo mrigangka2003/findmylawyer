@@ -75,18 +75,18 @@ const AddLawyer: React.FC = () => {
             formData.append("about", data.about);
 
             const res:AxiosResponse<any> = await axios.post(`${backendUrl}/api/v1/admin/add-lawyer`, formData,{
-              headers:{adminToken}
+                headers:{adminToken}
             });
 
             if(res.data.success){
-              toast.success(res.data.message);
-              reset();
+                toast.success(res.data.message);
+                reset();
             }else{
-              toast.error(res.data.error)
+                toast.error(res.data.error)
             }
-          
+            
         } catch (error:any) {
-          toast.error(error.message)
+            toast.error(error.message)
         }
     };
 
