@@ -1,7 +1,9 @@
 import { Scale, Shield, Award, Clock } from "lucide-react";
+import useTop from "../hooks/useTop";
 import { useNavigate } from "react-router-dom";
 
 const About = () => {
+    useTop();
 
     const navigate = useNavigate();
 

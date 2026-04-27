@@ -1,5 +1,6 @@
 // MyProfile.tsx
 import { useState } from "react";
+import useTop from "../hooks/useTop";
 import {
     Edit3,
     Check,
@@ -27,6 +28,7 @@ type UserData = {
 };
 
 export default function MyProfile() {
+    useTop();
     const [userData, setUserData] = useState<UserData>({
         name: "Mrigangka Datta",
         image: "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg",

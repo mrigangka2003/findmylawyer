@@ -1,4 +1,5 @@
 import React from "react";
+import useTop from "../hooks/useTop";
 import {
     Phone,
     Mail,
@@ -29,6 +30,7 @@ interface ContactInfo {
 // }
 
 const Contact: React.FC = () => {
+    useTop();
     const navigate = useNavigate();
 
     const contactInfo: ContactInfo[] = [

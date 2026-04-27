@@ -1,7 +1,9 @@
 import { useLawyerStore } from "../store/useLawyerStore";
+import useTop from "../hooks/useTop";
 import { MapPin, CalendarClock, CreditCard, XCircle  } from "lucide-react";
 
 const MyAppointments = () => {
+    useTop();
     const lawyers = useLawyerStore((state) => state.lawyers);
 
     return (

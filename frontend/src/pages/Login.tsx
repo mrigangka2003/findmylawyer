@@ -1,7 +1,9 @@
 import { useState } from "react";
+import useTop from "../hooks/useTop";
 import { SignUp, SignIn } from "../components";
 
 export default function Login() {
+    useTop();
     const [isSignUp, setIsSignUp] = useState(false);
 
     return (

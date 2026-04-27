@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import useTop from "../hooks/useTop";
 import { useEffect, useState } from "react";
 import { Info, IndianRupee } from "lucide-react";
 
@@ -6,6 +7,7 @@ import { useLawyerStore } from "../store/useLawyerStore";
 import { RelatedLawyers } from "../components";
 
 const Appointment = () => {
+    useTop();
     const { lawyerId } = useParams();
     const lawyers = useLawyerStore((state) => state.lawyers);
     type Lawyer = (typeof lawyers)[number];

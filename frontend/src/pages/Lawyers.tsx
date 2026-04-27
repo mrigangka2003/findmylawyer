@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import useTop from "../hooks/useTop";
 import { useNavigate, useParams } from "react-router-dom";
 import { MapPin, ChevronRight, Users, Filter } from "lucide-react";
 
 import { useLawyerStore } from "../store/useLawyerStore";
 
 const Lawyers = () => {
+    useTop();
     const { speciality } = useParams();
     const lawyers = useLawyerStore((state) => state.lawyers);
 
@@ -45,7 +47,7 @@ const Lawyers = () => {
 
     useEffect(() => {
         applyFilter();
-    }, [lawyers, speciality]);
+    }, );
 
     return (
         <div className="min-h-screen bg-black">
