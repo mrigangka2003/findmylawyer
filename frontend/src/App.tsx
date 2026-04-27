@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Routes,Route } from "react-router-dom"
 
 import NavBar from "./components/NavBar"
@@ -12,12 +13,17 @@ import {
   Appointment
 } from "./pages"
 import Footer from "./components/Footer"
-
+import { useLawyerStore } from "./store/useLawyerStore"
 
 function App() {
+  const fetchLawyers = useLawyerStore((state) => state.fetchLawyers);
+
+  useEffect(() => {
+    fetchLawyers();
+  }, [fetchLawyers]);
 
   return (
-    <div>
+    <div className="bg-dark-900 min-h-screen">
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home/>}/>

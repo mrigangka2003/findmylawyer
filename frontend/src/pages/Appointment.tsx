@@ -21,7 +21,7 @@ const Appointment = () => {
     ];
 
     const [lawyerInfo, setLawyerInfo] = useState<Lawyer | null>(null);
-    const [lawSlots, setLawSlots] = useState<Array<any>>([]);
+    const [lawSlots, setLawSlots] = useState<Array<{ datetime: Date; time: string }[]>>([]);
     const [slotIndex, setSlotIndex] = useState<number>(0);
     const [slotTime, setSlotTime] = useState<string>("");
 
@@ -37,14 +37,14 @@ const Appointment = () => {
         setLawSlots([]);
 
         // getting current Date
-        let today = new Date();
+        const today = new Date();
 
         for (let i = 0; i < 7; i++) {
             //getting date with index ;
-            let currentDate = new Date(today);
+            const currentDate = new Date(today);
             currentDate.setDate(today.getDate() + i);
 
-            let endTime = new Date();
+            const endTime = new Date();
             endTime.setDate(today.getDate() + i);
             endTime.setHours(20, 0, 0, 0);
 
@@ -61,10 +61,10 @@ const Appointment = () => {
                 currentDate.setMinutes(0);
             }
 
-            let timeSlots = [];
+            const timeSlots: { datetime: Date; time: string }[] = [];
 
             while (currentDate < endTime) {
-                let formattedTime = currentDate.toLocaleTimeString([], {
+                const formattedTime = currentDate.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
                 });
@@ -85,7 +85,7 @@ const Appointment = () => {
 
     useEffect(() => {
         fetchLawyerInfo();
-    }, [lawyerId, lawyers]);
+    },);
 
     useEffect(() => {
         getAvailableSlots();
@@ -130,7 +130,7 @@ const Appointment = () => {
                         {/* About Section */}
                         <div className="mt-6">
                             <div className="flex items-center gap-2 text-lg font-medium text-white mb-2">
-                                <Info className="w-5 h-5 text-blue-500" />
+                                <Info className="w-5 h-5 text-white" />
                                 About
                             </div>
                             <p className="text-zinc-400 leading-relaxed">
@@ -193,7 +193,7 @@ const Appointment = () => {
                     </div>
 
                     <div className="flex items-center gap-3 w-full overflow-x-scroll mt-6 scroll-smooth pb-2 scrollbar-hide">
-                        {lawSlots?.[slotIndex]?.map((item: any, index: any) => (
+                        {lawSlots?.[slotIndex]?.map((item, index) => (
                             <p
                                 onClick={() => setSlotTime(item.time)}
                                 className={`text-sm font-medium flex-shrink-0 px-6 py-3 rounded-xl cursor-pointer transition-all duration-300 border-2 hover:scale-105 ${

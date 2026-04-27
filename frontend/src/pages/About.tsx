@@ -145,10 +145,10 @@ const About = () => {
                         </div>
 
                         {/* Trust */}
-                        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-2xl p-8 border border-gray-700 hover:border-blue-400/50 transition-all duration-300 hover:scale-105">
+                        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-2xl p-8 border border-gray-700 hover:border-white/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-4 mb-4">
-                                <div className="bg-blue-400/20 p-3 rounded-xl">
-                                    <Shield className="w-6 h-6 text-blue-400" />
+                                <div className="bg-white/20 p-3 rounded-xl">
+                                    <Shield className="w-6 h-6 text-white" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white">
                                     Trust

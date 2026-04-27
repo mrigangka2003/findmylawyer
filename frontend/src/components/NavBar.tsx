@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, X, User } from 'lucide-react';
 
 type MenuItem = {
     label: string;
@@ -26,94 +26,89 @@ const NavBar = () => {
     ];
 
     return (
-        <header className="relative z-40">
-            {/* Deep black background with subtle gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-black"></div>
-
-            <nav className="relative flex items-center justify-between p-6 backdrop-blur-xl bg-black/50 border-b border-white/10">
-                {/* Logo - Professional white gradient */}
-                <div className="text-2xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent tracking-wide">
-                    FINDMYLAWYER
+        <header className="sticky top-0 z-40 bg-zinc-950/70 backdrop-blur-lg border-b border-white/10">
+            <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 py-3">
+                
+                {/* Logo */}
+                <div
+                    onClick={() => navigate('/')}
+                    className="text-xl font-display font-bold text-white tracking-wider cursor-pointer"
+                >
+                    FINDMYLAWYER.
                 </div>
 
-                {/* Navigation Items - Crisp white glass effect */}
-                <ul className="hidden md:flex gap-8 bg-white/5 backdrop-blur-md border border-white/20 px-8 py-4 rounded-2xl shadow-2xl shadow-black/30">
+                {/* Desktop Navigation */}
+                <ul className="hidden md:flex items-center gap-7">
                     {navItems.map((item) => (
                         <li key={item.path}>
                             <NavLink
                                 to={item.path}
                                 className={({ isActive }) =>
                                     isActive
-                                        ? 'text-white font-bold relative before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-white before:rounded-full pb-1 transition-all duration-300 tracking-wide'
-                                        : 'text-white/80 hover:text-white transition-all duration-300 hover:scale-105 font-medium tracking-wide'
+                                        ? 'text-white font-semibold border-b-2 border-white pb-1 transition-all'
+                                        : 'text-gray-400 hover:text-white transition-colors font-medium'
                                 }
                             >
-                                {item.label.toUpperCase()}
+                                {item.label}
                             </NavLink>
                         </li>
                     ))}
                 </ul>
 
-                {/* User Section */}
-                <div className="flex items-center gap-4">
-                    {isAuthenticated ? (
-                        <div>
-                            <div className="flex items-center gap-3 cursor-pointer group relative">
-                                {/* Professional avatar with white accent */}
-                                <div className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 p-0.5 shadow-lg">
-                                    <div className="w-full h-full rounded-full bg-gradient-to-b from-gray-800 to-black flex items-center justify-center border border-white/10">
-                                        <span className="text-white font-bold text-sm">
-                                            U
-                                        </span>
-                                    </div>
-                                </div>
-                                <ChevronDown
-                                    className="text-white/80 group-hover:text-white transition-all duration-300 group-hover:rotate-180"
-                                    size={18}
-                                />
+                {/* Right Section */}
+                <div className="flex items-center gap-3">
 
-                                {/* Dropdown Menu - Professional glass panel */}
-                                <div className="absolute top-0 right-0 pt-16 text-base font-medium z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-2">
-                                    <div className="min-w-56 bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-5 text-white shadow-2xl shadow-black/50">
-                                        {userMenuItems.map((item) => (
-                                            <div
-                                                key={item.path}
-                                                className="mb-3 last:mb-0"
-                                            >
-                                                <Link
-                                                    className="block w-full text-left hover:text-gray-300 cursor-pointer transition-all duration-300 hover:translate-x-2 py-3 px-4 rounded-xl hover:bg-white/10 font-medium tracking-wide border border-transparent hover:border-white/20"
-                                                    to={item.path}
-                                                >
-                                                    {item.label.toUpperCase()}
-                                                </Link>
-                                            </div>
-                                        ))}
-                                        <hr className="border-white/20 my-4" />
-                                        <div
-                                            className="py-3 px-4 rounded-xl hover:bg-red-900/30 hover:text-red-200 cursor-pointer transition-all duration-300 hover:translate-x-2 font-medium tracking-wide border border-transparent hover:border-red-500/30"
-                                            onClick={() => {
-                                                setIsAuthenticated(false);
-                                                navigate('/');
-                                            }}
+                    {/* Authenticated User */}
+                    {isAuthenticated ? (
+                        <div className="relative group cursor-pointer">
+                            <div className="flex items-center gap-2 text-white">
+                                <div className="w-9 h-9 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
+                                    <User size={17} className="text-gray-300" />
+                                </div>
+
+                                <ChevronDown
+                                    size={15}
+                                    className="text-gray-400 group-hover:text-white transition-colors"
+                                />
+                            </div>
+
+                            {/* Dropdown */}
+                            <div className="absolute right-0 top-full mt-3 w-48 bg-zinc-950/80 backdrop-blur-lg border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
+                                <div className="py-2">
+                                    {userMenuItems.map((item) => (
+                                        <Link
+                                            key={item.path}
+                                            to={item.path}
+                                            className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
                                         >
-                                            LOGOUT
-                                        </div>
-                                    </div>
+                                            {item.label}
+                                        </Link>
+                                    ))}
+
+                                    <div className="h-px bg-white/10 my-2"></div>
+
+                                    <button
+                                        onClick={() => {
+                                            setIsAuthenticated(false);
+                                            navigate('/');
+                                        }}
+                                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                                    >
+                                        Logout
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <button
-                            className="relative px-8 py-3 bg-white/10 backdrop-blur-sm border border-white/30 text-white font-bold rounded-2xl overflow-hidden group transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-white/20 hover:bg-white/20"
                             onClick={() => navigate('/login')}
+                            className="hidden md:block px-5 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-white font-semibold hover:bg-white/20 transition-all"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <span className="relative z-10 tracking-wide">
-                                Login
-                            </span>
+                            Login
                         </button>
                     )}
 
+                    {/* Mobile Toggle */}
                     <div className="md:hidden">
                         {showUserMenu ? (
                             <X
@@ -127,34 +122,41 @@ const NavBar = () => {
                             />
                         )}
                     </div>
+                </div>
 
-                    {/* Mobile Navigation Menu - full screen overlay */}
-                    {showUserMenu && (
-                        <div className="fixed top-0 left-0 w-full h-screen bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-8 md:hidden">
+                {/* Mobile Menu */}
+                {showUserMenu && (
+                    <div className="fixed inset-0 top-[65px] bg-zinc-950/95 backdrop-blur-lg z-50 flex flex-col p-6 md:hidden border-t border-white/10">
+                        <div className="flex flex-col gap-6">
                             {navItems.map((item) => (
                                 <NavLink
                                     key={item.path}
                                     to={item.path}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? 'text-white text-xl font-bold tracking-wide'
-                                            : 'text-white/80 text-xl hover:text-white transition duration-300 tracking-wide'
+                                            ? 'text-white text-xl font-bold'
+                                            : 'text-gray-400 text-xl hover:text-white transition-colors'
                                     }
                                     onClick={() => setShowUserMenu(false)}
                                 >
-                                    {item.label.toUpperCase()}
+                                    {item.label}
                                 </NavLink>
                             ))}
 
-                            <X
-                                height={40}
-                                width={40}
-                                className="text-white cursor-pointer bg-red-600 rounded-md p-1 sm:hidden"
-                                onClick={() => setShowUserMenu(false)}
-                            />
+                            {!isAuthenticated && (
+                                <button
+                                    className="mt-4 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-lg font-semibold"
+                                    onClick={() => {
+                                        setShowUserMenu(false);
+                                        navigate('/login');
+                                    }}
+                                >
+                                    Login
+                                </button>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </nav>
         </header>
     );

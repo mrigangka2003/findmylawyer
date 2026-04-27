@@ -33,7 +33,7 @@ const RelatedLawyers = ({
         >
             {/* Header Section */}
             <div className="text-center space-y-4">
-                <div className="flex items-center justify-center gap-2 text-blue-400 text-sm font-medium mb-2">
+                <div className="flex items-center justify-center gap-2 text-gray-300 text-sm font-medium mb-2">
                     <Award className="w-4 h-4" />
                     <span>RELATED SPECIALISTS</span>
                 </div>
@@ -59,7 +59,7 @@ const RelatedLawyers = ({
                         className="group relative bg-gradient-to-br from-zinc-900 to-zinc-800 border border-white/20 rounded-2xl overflow-hidden cursor-pointer hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10"
                     >
                         {/* Background Glow Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                         {/* Image Container */}
                         <div className="relative overflow-hidden">
@@ -83,10 +83,10 @@ const RelatedLawyers = ({
                         {/* Content */}
                         <div className="relative p-5 space-y-3">
                             <div>
-                                <h3 className="font-semibold text-white text-lg group-hover:text-blue-400 transition-colors duration-300">
+                                <h3 className="font-semibold text-white text-lg group-hover:text-gray-300 transition-colors duration-300">
                                     {item.name}
                                 </h3>
-                                <p className="text-blue-400 text-sm font-medium">
+                                <p className="text-gray-400 text-sm font-medium">
                                     {item.speciality}
                                 </p>
                             </div>
@@ -110,7 +110,7 @@ const RelatedLawyers = ({
                                         {item.experience}
                                     </span>
                                 </div>
-                                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-400 group-hover:translate-x-1 transition-all duration-300" />
+                                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
                             </div>
                         </div>
                     </div>

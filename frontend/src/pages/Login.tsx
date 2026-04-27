@@ -1,30 +1,31 @@
 import { useState } from "react";
-
 import { SignUp, SignIn } from "../components";
 
 export default function Login() {
     const [isSignUp, setIsSignUp] = useState(false);
 
     return (
-        <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-zinc-900 to-black px-4">
+        <section className="min-h-screen bg-gradient-to-br from-black via-zinc-950 to-black flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-md">
-                {/* Toggle Buttons */}
-                <div className="mb-8 flex bg-zinc-800 rounded-lg p-1">
+
+                {/* Toggle Tabs */}
+                <div className="mb-6 flex items-center bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-1">
                     <button
                         onClick={() => setIsSignUp(false)}
-                        className={`flex-1 py-2 px-4 rounded-md font-medium transition-all duration-300 ${
+                        className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
                             !isSignUp
-                                ? "bg-indigo-600 text-white shadow-lg"
+                                ? "bg-white text-black shadow-lg"
                                 : "text-zinc-400 hover:text-white"
                         }`}
                     >
                         Sign In
                     </button>
+
                     <button
                         onClick={() => setIsSignUp(true)}
-                        className={`flex-1 py-2 px-4 rounded-md font-medium transition-all duration-300 ${
+                        className={`flex-1 py-3 rounded-xl font-semibold transition-all duration-300 ${
                             isSignUp
-                                ? "bg-indigo-600 text-white shadow-lg"
+                                ? "bg-white text-black shadow-lg"
                                 : "text-zinc-400 hover:text-white"
                         }`}
                     >
@@ -32,56 +33,56 @@ export default function Login() {
                     </button>
                 </div>
 
-                {/* Form Container */}
-                <div className="bg-zinc-900/50 backdrop-blur-sm rounded-xl p-8 shadow-2xl border border-zinc-800">
-                    <div className="space-y-8">
-                        {/* Header */}
-                        <div className="text-center">
-                            <h1 className="text-3xl font-bold text-white mb-2">
-                                {isSignUp ? "Create Account" : "Welcome Back"}
-                            </h1>
-                            <p className="text-zinc-400">
-                                {isSignUp
-                                    ? "Join us and start your journey"
-                                    : "Sign in to continue to your account"}
-                            </p>
-                        </div>
+                {/* Main Card */}
+                <div className="bg-zinc-950/70 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
 
-                        {/* Your Components with Animation */}
-                        <div className="relative overflow-hidden">
-                            <div
-                                className={`transition-all duration-500 ease-in-out ${
-                                    isSignUp
-                                        ? "translate-x-0 opacity-100"
-                                        : "translate-x-full opacity-0 absolute inset-0"
-                                }`}
-                            >
-                                <SignUp />
-                            </div>
+                    {/* Heading */}
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-bold text-white mb-2">
+                            {isSignUp ? "Create Account" : "Welcome Back"}
+                        </h1>
 
-                            <div
-                                className={`transition-all duration-500 ease-in-out ${
-                                    !isSignUp
-                                        ? "translate-x-0 opacity-100"
-                                        : "-translate-x-full opacity-0 absolute inset-0"
-                                }`}
-                            >
-                                <SignIn />
-                            </div>
-                        </div>
-
-                        {/* Additional Links */}
-                        <div className="text-center text-sm text-zinc-400">
+                        <p className="text-zinc-400 text-sm">
                             {isSignUp
-                                ? "Already have an account?"
-                                : "Don't have an account?"}{" "}
-                            <button
-                                onClick={() => setIsSignUp(!isSignUp)}
-                                className="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors font-medium"
-                            >
-                                {isSignUp ? "Sign In" : "Sign Up"}
-                            </button>
+                                ? "Create your account and find the right legal help"
+                                : "Sign in to continue to your account"}
+                        </p>
+                    </div>
+
+                    {/* Form Switch */}
+                    <div className="relative min-h-[340px] overflow-hidden">
+                        <div
+                            className={`transition-all duration-500 ease-in-out ${
+                                isSignUp
+                                    ? "translate-x-0 opacity-100"
+                                    : "translate-x-full opacity-0 absolute inset-0"
+                            }`}
+                        >
+                            <SignUp />
                         </div>
+
+                        <div
+                            className={`transition-all duration-500 ease-in-out ${
+                                !isSignUp
+                                    ? "translate-x-0 opacity-100"
+                                    : "-translate-x-full opacity-0 absolute inset-0"
+                            }`}
+                        >
+                            <SignIn />
+                        </div>
+                    </div>
+
+                    {/* Bottom Link */}
+                    <div className="text-center text-sm text-zinc-400 mt-6">
+                        {isSignUp
+                            ? "Already have an account?"
+                            : "Don’t have an account?"}{" "}
+                        <button
+                            onClick={() => setIsSignUp(!isSignUp)}
+                            className="text-white font-semibold hover:underline transition"
+                        >
+                            {isSignUp ? "Sign In" : "Sign Up"}
+                        </button>
                     </div>
                 </div>
             </div>

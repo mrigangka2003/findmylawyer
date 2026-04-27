@@ -15,9 +15,9 @@ const Footer = () => {
         <footer className="relative bg-gradient-to-br from-black via-zinc-900 to-black text-white overflow-hidden">
             {/* Background Animation (kept for effect, optional) */}
             <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-10 left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl" />
-                <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-xl" />
-                <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-cyan-500/20 rounded-full blur-xl" />
+                <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full blur-xl" />
+                <div className="absolute bottom-20 right-20 w-40 h-40 bg-white/5 rounded-full blur-xl" />
+                <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-white/5 rounded-full blur-xl" />
             </div>
 
             <div className="relative z-10 pt-16 pb-8 px-6 sm:px-10 lg:px-20">
@@ -136,7 +136,7 @@ const Footer = () => {
                                     href="https://www.linkedin.com/in/mrigangka/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1 text-blue-400"
+                                    className="flex items-center gap-1 text-white"
                                 >
                                     <span className="font-semibold">
                                         MrigangkaDatta
