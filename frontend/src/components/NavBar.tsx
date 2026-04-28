@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { ChevronDown, Menu, X, User } from 'lucide-react';
+import { ChevronDown, Menu, X, User, Sparkles } from 'lucide-react';
 
 type MenuItem = {
     label: string;
@@ -26,27 +26,37 @@ const NavBar = () => {
     ];
 
     return (
-        <header className="sticky top-0 z-40 bg-zinc-950/70 backdrop-blur-lg border-b border-white/10">
-            <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 py-3">
-                
+        <header className="sticky top-0 z-40 bg-slate-950/60 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+            {/* Ambient glow line */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+
+            <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 py-3.5">
+
                 {/* Logo */}
                 <div
                     onClick={() => navigate('/')}
-                    className="text-xl font-display font-bold text-white tracking-wider cursor-pointer"
+                    className="flex items-center gap-2 text-xl font-bold text-white tracking-wider cursor-pointer group"
                 >
-                    FINDMYLAWYER.
+                    <div className="relative">
+                        <Sparkles size={20} className="text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
+                        <div className="absolute inset-0 blur-sm bg-cyan-400/40 rounded-full" />
+                    </div>
+                    <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+                        FINDMYLAWYER
+                    </span>
+                    <span className="text-cyan-400/80 text-2xl leading-none">.</span>
                 </div>
 
                 {/* Desktop Navigation */}
-                <ul className="hidden md:flex items-center gap-7">
+                <ul className="hidden md:flex items-center gap-1.5 bg-white/[0.03] rounded-2xl px-2 py-1.5 border border-white/[0.06]">
                     {navItems.map((item) => (
                         <li key={item.path}>
                             <NavLink
                                 to={item.path}
                                 className={({ isActive }) =>
                                     isActive
-                                        ? 'text-white font-semibold border-b-2 border-white pb-1 transition-all'
-                                        : 'text-gray-400 hover:text-white transition-colors font-medium'
+                                        ? 'relative px-4 py-2 rounded-xl text-white text-sm font-semibold bg-white/10 border border-white/[0.08] shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)] transition-all duration-300'
+                                        : 'relative px-4 py-2 rounded-xl text-gray-400 hover:text-white text-sm font-medium hover:bg-white/[0.04] transition-all duration-300'
                                 }
                             >
                                 {item.label}
@@ -61,39 +71,41 @@ const NavBar = () => {
                     {/* Authenticated User */}
                     {isAuthenticated ? (
                         <div className="relative group cursor-pointer">
-                            <div className="flex items-center gap-2 text-white">
-                                <div className="w-9 h-9 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">
-                                    <User size={17} className="text-gray-300" />
+                            <div className="flex items-center gap-2.5 text-white bg-white/[0.03] rounded-2xl pl-1.5 pr-3 py-1.5 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-500/20 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-blue-500/30 transition-all duration-300">
+                                    <User size={15} className="text-cyan-300" />
                                 </div>
-
+                                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">Account</span>
                                 <ChevronDown
-                                    size={15}
-                                    className="text-gray-400 group-hover:text-white transition-colors"
+                                    size={14}
+                                    className="text-gray-500 group-hover:text-cyan-300 transition-all duration-300 group-hover:rotate-180"
                                 />
                             </div>
 
                             {/* Dropdown */}
-                            <div className="absolute right-0 top-full mt-3 w-48 bg-zinc-950/80 backdrop-blur-lg border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
+                            <div className="absolute right-0 top-full mt-3 w-56 bg-slate-950/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top-right overflow-hidden">
                                 <div className="py-2">
                                     {userMenuItems.map((item) => (
                                         <Link
                                             key={item.path}
                                             to={item.path}
-                                            className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/[0.04] hover:text-white transition-all duration-200"
                                         >
+                                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/40" />
                                             {item.label}
                                         </Link>
                                     ))}
 
-                                    <div className="h-px bg-white/10 my-2"></div>
+                                    <div className="h-px bg-white/[0.06] mx-3 my-2"></div>
 
                                     <button
                                         onClick={() => {
                                             setIsAuthenticated(false);
                                             navigate('/');
                                         }}
-                                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                                        className="w-full text-left px-4 py-2.5 text-sm text-red-400/80 hover:bg-red-500/5 hover:text-red-400 transition-all duration-200 flex items-center gap-3"
                                     >
+                                        <span className="w-1.5 h-1.5 rounded-full bg-red-500/40" />
                                         Logout
                                     </button>
                                 </div>
@@ -102,9 +114,10 @@ const NavBar = () => {
                     ) : (
                         <button
                             onClick={() => navigate('/login')}
-                            className="hidden md:block px-5 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-white font-semibold hover:bg-white/20 transition-all"
+                            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur-md border border-cyan-500/20 text-white text-sm font-semibold hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group"
                         >
-                            Login
+                            <span>Login</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-shadow" />
                         </button>
                     )}
 
@@ -112,12 +125,12 @@ const NavBar = () => {
                     <div className="md:hidden">
                         {showUserMenu ? (
                             <X
-                                className="w-6 h-6 text-white cursor-pointer"
+                                className="w-6 h-6 text-white cursor-pointer hover:text-cyan-400 transition-colors"
                                 onClick={() => setShowUserMenu(false)}
                             />
                         ) : (
                             <Menu
-                                className="w-6 h-6 text-white cursor-pointer"
+                                className="w-6 h-6 text-white cursor-pointer hover:text-cyan-400 transition-colors"
                                 onClick={() => setShowUserMenu(true)}
                             />
                         )}
@@ -126,32 +139,37 @@ const NavBar = () => {
 
                 {/* Mobile Menu */}
                 {showUserMenu && (
-                    <div className="fixed inset-0 top-[65px] bg-zinc-950/95 backdrop-blur-lg z-50 flex flex-col p-6 md:hidden border-t border-white/10">
-                        <div className="flex flex-col gap-6">
+                    <div className="fixed inset-0 top-[65px] bg-slate-950/98 backdrop-blur-xl z-50 flex flex-col p-6 md:hidden border-t border-white/[0.06]">
+                        {/* Mobile ambient glow */}
+                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+
+                        <div className="flex flex-col gap-2 mt-4">
                             {navItems.map((item) => (
                                 <NavLink
                                     key={item.path}
                                     to={item.path}
                                     className={({ isActive }) =>
                                         isActive
-                                            ? 'text-white text-xl font-bold'
-                                            : 'text-gray-400 text-xl hover:text-white transition-colors'
+                                            ? 'flex items-center gap-3 px-5 py-4 rounded-2xl text-white text-lg font-bold bg-white/5 border border-white/[0.08] shadow-[inset_0_1px_1px_rgba(255,255,255,0.04)]'
+                                            : 'flex items-center gap-3 px-5 py-4 rounded-2xl text-gray-400 text-lg hover:text-white hover:bg-white/[0.02] transition-all duration-300'
                                     }
                                     onClick={() => setShowUserMenu(false)}
                                 >
+                                    <span className="w-2 h-2 rounded-full bg-cyan-500/50" />
                                     {item.label}
                                 </NavLink>
                             ))}
 
                             {!isAuthenticated && (
                                 <button
-                                    className="mt-4 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-lg font-semibold"
+                                    className="mt-6 px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur-md border border-cyan-500/20 text-white text-lg font-semibold hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2"
                                     onClick={() => {
                                         setShowUserMenu(false);
                                         navigate('/login');
                                     }}
                                 >
-                                    Login
+                                    <span>Login</span>
+                                    <Sparkles size={18} className="text-cyan-400" />
                                 </button>
                             )}
                         </div>
