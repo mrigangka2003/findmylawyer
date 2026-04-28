@@ -1,27 +1,7 @@
-import { config as configDotenv } from "dotenv";
+import dotenv from 'dotenv';
 
-configDotenv();
+dotenv.config();
 
-const PORT = Number(process.env.PORT) || 8000;
-const MONGODB_URI = process.env.MONGODB_URI as string
-
-const DB_NAME :string = "findmylawyer";
-
-const ClOUDINARY_NAME = process.env.CLOUDINARY_NAME as string;
-const ClOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY as string;
-const ClOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY as string;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL as string;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD as string
-const JWT_SECRET = process.env.JWT_SECRET as string
-
-export {
-    PORT,
-    DB_NAME,
-    MONGODB_URI,
-    ClOUDINARY_NAME,
-    ClOUDINARY_API_KEY,
-    ClOUDINARY_SECRET_KEY,
-    ADMIN_EMAIL,
-    ADMIN_PASSWORD,
-    JWT_SECRET
-}
+export const PORT = process.env.PORT || 8000;
+export const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+export const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
