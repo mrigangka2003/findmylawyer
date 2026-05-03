@@ -1,6 +1,10 @@
-// MyProfile.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useTop from "../hooks/useTop";
+import api from "../utils/api";
+import { AxiosError } from "axios";
+import { useAuthStore } from "../store/useAuthStore";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import {
     Edit3,
     Check,
@@ -29,27 +33,60 @@ type UserData = {
 
 export default function MyProfile() {
     useTop();
-    const [userData, setUserData] = useState<UserData>({
-        name: "Mrigangka Datta",
-        image: "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg",
-        email: "qbatau@gmail.com",
-        phoneNumber: "12345678810",
-        address: { line1: "Ramnagar", line2: "barjala" },
-        gender: "male",
-        dob: "15-01-2003",
-    });
-
+    const navigate = useNavigate();
+    const { isAuthenticated } = useAuthStore();
+    const [userData, setUserData] = useState<UserData | null>(null);
     const [isEdit, setIsEdit] = useState(false);
-    const [draft, setDraft] = useState<UserData>(userData);
+    const [draft, setDraft] = useState<UserData | null>(null);
 
-    const handleSave = () => {
-        setUserData(draft);
-        setIsEdit(false);
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate("/login");
+            return;
+        }
+
+        const fetchProfile = async () => {
+            try {
+                const { data } = await api.get("/users/profile");
+                const profileData = {
+                    name: data.user.name,
+                    email: data.user.email,
+                    image: data.user.image || "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg",
+                    phoneNumber: data.user.phoneNumber || "",
+                    address: data.user.address || { line1: "", line2: "" },
+                    gender: data.user.gender || "male",
+                    dob: data.user.dob || "",
+                };
+                setUserData(profileData);
+                setDraft(profileData);
+            } catch (err) {
+                const error = err as AxiosError<{ message: string }>;
+                toast.error(error.response?.data?.message || "Failed to fetch profile");
+            }
+        };
+
+        fetchProfile();
+    }, [isAuthenticated, navigate]);
+
+    const handleSave = async () => {
+        if (!draft) return;
+        try {
+            await api.put("/users/profile", draft);
+            setUserData(draft);
+            setIsEdit(false);
+            toast.success("Profile updated!");
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            toast.error(error.response?.data?.message || "Failed to update profile");
+        }
     };
+    
     const handleCancel = () => {
         setDraft(userData);
         setIsEdit(false);
     };
+
+    if (!userData || !draft) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>;
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-neutral-950 via-neutral-900 to-black p-4 flex items-center justify-center">

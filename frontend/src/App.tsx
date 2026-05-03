@@ -10,10 +10,13 @@ import {
   MyProfile,
   MyAppointments,
   Login,
-  Appointment
+  Appointment,
+  AdminDashboard
 } from "./pages"
 import Footer from "./components/Footer"
 import { useLawyerStore } from "./store/useLawyerStore"
+
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const fetchLawyers = useLawyerStore((state) => state.fetchLawyers);
@@ -24,6 +27,7 @@ function App() {
 
   return (
     <div className="bg-dark-900 min-h-screen">
+      <Toaster position="top-center" />
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -35,6 +39,11 @@ function App() {
         <Route path="/my-profile" element={<MyProfile/>}/>
         <Route path="/my-appointments" element={<MyAppointments/>}/>
         <Route path="/appointment/:lawyerId" element={<Appointment/>}/>
+        
+        {/* Dashboards */}
+        <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+        <Route path="/lawyer/dashboard" element={<MyAppointments/>}/>
+        <Route path="/user/dashboard" element={<MyAppointments/>}/>
       </Routes>
       <Footer/>
     </div>

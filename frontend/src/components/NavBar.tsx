@@ -7,9 +7,11 @@ type MenuItem = {
     path: string;
 };
 
+import { useAuthStore } from '../store/useAuthStore';
+
 const NavBar = () => {
     const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const { isAuthenticated, user, logout } = useAuthStore();
 
     const navigate = useNavigate();
 
@@ -22,13 +24,20 @@ const NavBar = () => {
 
     const userMenuItems: MenuItem[] = [
         { label: 'My Profile', path: '/my-profile' },
-        { label: 'My Appointments', path: '/my-appointments' },
     ];
 
+    if (user?.role === 'admin') {
+        userMenuItems.push({ label: 'Dashboard', path: '/admin/dashboard' });
+    } else if (user?.role === 'lawyer') {
+        userMenuItems.push({ label: 'My Dashboard', path: '/lawyer/dashboard' });
+    } else {
+        userMenuItems.push({ label: 'My Appointments', path: '/user/dashboard' });
+    }
+
     return (
-        <header className="sticky top-0 z-40 bg-slate-950/60 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+        <header className="sticky top-0 z-40 bg-[#050505]/80 backdrop-blur-xl border-b border-white/[0.05]">
             {/* Ambient glow line */}
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
             <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 py-3.5">
 
@@ -38,13 +47,12 @@ const NavBar = () => {
                     className="flex items-center gap-2 text-xl font-bold text-white tracking-wider cursor-pointer group"
                 >
                     <div className="relative">
-                        <Sparkles size={20} className="text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
-                        <div className="absolute inset-0 blur-sm bg-cyan-400/40 rounded-full" />
+                        <Sparkles size={20} className="text-white group-hover:text-gray-300 transition-colors duration-300" />
+                        <div className="absolute inset-0 blur-sm bg-white/20 rounded-full" />
                     </div>
-                    <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+                    <span className="text-white tracking-widest">
                         FINDMYLAWYER
                     </span>
-                    <span className="text-cyan-400/80 text-2xl leading-none">.</span>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -71,19 +79,19 @@ const NavBar = () => {
                     {/* Authenticated User */}
                     {isAuthenticated ? (
                         <div className="relative group cursor-pointer">
-                            <div className="flex items-center gap-2.5 text-white bg-white/[0.03] rounded-2xl pl-1.5 pr-3 py-1.5 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
-                                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-500/20 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-blue-500/30 transition-all duration-300">
-                                    <User size={15} className="text-cyan-300" />
+                            <div className="flex items-center gap-2.5 text-white bg-white/[0.03] rounded-2xl pl-1.5 pr-3 py-1.5 border border-white/[0.05] hover:border-white/[0.1] transition-all duration-300">
+                                <div className="w-8 h-8 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-all duration-300">
+                                    <User size={15} className="text-white" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">Account</span>
+                                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{user?.name || 'Account'}</span>
                                 <ChevronDown
                                     size={14}
-                                    className="text-gray-500 group-hover:text-cyan-300 transition-all duration-300 group-hover:rotate-180"
+                                    className="text-gray-500 group-hover:text-white transition-all duration-300 group-hover:rotate-180"
                                 />
                             </div>
 
                             {/* Dropdown */}
-                            <div className="absolute right-0 top-full mt-3 w-56 bg-slate-950/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top-right overflow-hidden">
+                            <div className="absolute right-0 top-full mt-3 w-56 bg-[#050505]/95 backdrop-blur-xl border border-white/[0.05] rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top-right overflow-hidden">
                                 <div className="py-2">
                                     {userMenuItems.map((item) => (
                                         <Link
@@ -91,7 +99,7 @@ const NavBar = () => {
                                             to={item.path}
                                             className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/[0.04] hover:text-white transition-all duration-200"
                                         >
-                                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/40" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
                                             {item.label}
                                         </Link>
                                     ))}
@@ -100,7 +108,7 @@ const NavBar = () => {
 
                                     <button
                                         onClick={() => {
-                                            setIsAuthenticated(false);
+                                            logout();
                                             navigate('/');
                                         }}
                                         className="w-full text-left px-4 py-2.5 text-sm text-red-400/80 hover:bg-red-500/5 hover:text-red-400 transition-all duration-200 flex items-center gap-3"
@@ -114,10 +122,10 @@ const NavBar = () => {
                     ) : (
                         <button
                             onClick={() => navigate('/login')}
-                            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur-md border border-cyan-500/20 text-white text-sm font-semibold hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 group"
+                            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 text-white text-sm font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
                         >
                             <span>Login</span>
-                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-shadow" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-white group-hover:shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-shadow" />
                         </button>
                     )}
 
@@ -139,9 +147,9 @@ const NavBar = () => {
 
                 {/* Mobile Menu */}
                 {showUserMenu && (
-                    <div className="fixed inset-0 top-[65px] bg-slate-950/98 backdrop-blur-xl z-50 flex flex-col p-6 md:hidden border-t border-white/[0.06]">
+                    <div className="fixed inset-0 top-[65px] bg-[#050505]/98 backdrop-blur-xl z-50 flex flex-col p-6 md:hidden border-t border-white/[0.05]">
                         {/* Mobile ambient glow */}
-                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
                         <div className="flex flex-col gap-2 mt-4">
                             {navItems.map((item) => (
@@ -162,14 +170,14 @@ const NavBar = () => {
 
                             {!isAuthenticated && (
                                 <button
-                                    className="mt-6 px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur-md border border-cyan-500/20 text-white text-lg font-semibold hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-500/40 transition-all duration-300 flex items-center justify-center gap-2"
+                                    className="mt-6 px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-white text-lg font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2"
                                     onClick={() => {
                                         setShowUserMenu(false);
                                         navigate('/login');
                                     }}
                                 >
                                     <span>Login</span>
-                                    <Sparkles size={18} className="text-cyan-400" />
+                                    <Sparkles size={18} className="text-white" />
                                 </button>
                             )}
                         </div>

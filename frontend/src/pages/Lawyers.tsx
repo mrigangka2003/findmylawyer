@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import useTop from "../hooks/useTop";
-import { useNavigate, useParams } from "react-router-dom";
-import { MapPin, ChevronRight, Users, Filter } from "lucide-react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { MapPin, ChevronRight, Users, Filter, Sparkles, Bot } from "lucide-react";
+import api from "../utils/api";
+import toast from "react-hot-toast";
 
 import { useLawyerStore } from "../store/useLawyerStore";
 
@@ -11,9 +13,14 @@ const Lawyers = () => {
     const lawyers = useLawyerStore((state) => state.lawyers);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [filterDoc, setFilterDoc] = useState<typeof lawyers>([]);
     const [selectedSpeciality, setSelectedSpeciality] = useState<string>("");
+    const [aiQuery, setAiQuery] = useState(location.state?.aiQuery || "");
+    const [aiResponse, setAiResponse] = useState<string>("");
+    const [isAiLoading, setIsAiLoading] = useState(false);
+    const hasTriggeredAiRef = useRef(false);
 
     const specialities = [
         "Criminal Lawyers",
@@ -24,7 +31,7 @@ const Lawyers = () => {
         "Tax Lawyers",
     ];
 
-    const applyFilter = () => {
+    const applyFilter = useCallback(() => {
         if (speciality) {
             const filter = speciality.replace(/-/g, " ");
             setFilterDoc(
@@ -35,7 +42,7 @@ const Lawyers = () => {
             setFilterDoc(lawyers);
             setSelectedSpeciality("");
         }
-    };
+    }, [speciality, lawyers]);
 
     const handleSpecialityClick = (spec: string) => {
         const urlSpec = spec
@@ -47,7 +54,30 @@ const Lawyers = () => {
 
     useEffect(() => {
         applyFilter();
-    }, );
+    }, [applyFilter]);
+
+    const handleAiSearch = async (queryToSearch = aiQuery) => {
+        if (!queryToSearch.trim()) return;
+        setIsAiLoading(true);
+        setAiResponse("");
+        try {
+            const { data } = await api.post("/ai/search", { query: queryToSearch });
+            setAiResponse(data.response?.choices?.[0]?.message?.content || "No recommendations found.");
+        } catch (error) {
+            toast.error("AI search failed.");
+            console.log(error)
+        } finally {
+            setIsAiLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (aiQuery && !hasTriggeredAiRef.current) {
+            hasTriggeredAiRef.current = true;
+            handleAiSearch(aiQuery);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className="min-h-screen bg-black">
@@ -68,6 +98,36 @@ const Lawyers = () => {
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6 py-8">
+                {/* AI Search Section */}
+                <div className="mb-10 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-indigo-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10"><Bot size={100} /></div>
+                    <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <Sparkles className="text-indigo-400" size={20} /> Ask AI to find a lawyer
+                    </h2>
+                    <div className="flex gap-4">
+                        <input 
+                            type="text" 
+                            value={aiQuery}
+                            onChange={(e) => setAiQuery(e.target.value)}
+                            placeholder="Describe your legal issue (e.g., 'I need someone for a property dispute in Mumbai')"
+                            className="flex-1 bg-black/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                        />
+                        <button 
+                            onClick={() => handleAiSearch(aiQuery)}
+                            disabled={isAiLoading}
+                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50"
+                        >
+                            {isAiLoading ? "Thinking..." : "Search"}
+                        </button>
+                    </div>
+                    {aiResponse && (
+                        <div className="mt-6 bg-black/40 border border-zinc-700/50 rounded-xl p-4 text-zinc-300 whitespace-pre-wrap text-sm leading-relaxed">
+                            <strong className="text-white block mb-2">AI Recommendations:</strong>
+                            {aiResponse}
+                        </div>
+                    )}
+                </div>
+
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Sidebar */}
                     <div className="lg:w-80 shrink-0">

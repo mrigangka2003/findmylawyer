@@ -1,10 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useTop from "../hooks/useTop";
 import { useEffect, useState } from "react";
 import { Info, IndianRupee } from "lucide-react";
 
 import { useLawyerStore } from "../store/useLawyerStore";
 import { RelatedLawyers } from "../components";
+import { useAuthStore } from "../store/useAuthStore";
+import toast from "react-hot-toast";
+import api from "../utils/api";
+import { AxiosError } from "axios";
 
 const Appointment = () => {
     useTop();
@@ -85,17 +89,48 @@ const Appointment = () => {
         }
     };
 
+    const { isAuthenticated, user } = useAuthStore();
+    const navigate = useNavigate();
+
+    const bookAppointment = async () => {
+        if (!isAuthenticated) {
+            toast.error("Please login to book an appointment");
+            navigate("/login");
+            return;
+        }
+
+        if (!slotTime) {
+            toast.error("Please select a time slot");
+            return;
+        }
+
+        try {
+            const date = lawSlots[slotIndex][0].datetime.toISOString().split('T')[0];
+            const { data } = await api.post("/bookings", {
+                lawyerId,
+                userId: user?.id,
+                date,
+                timeSlot: slotTime
+            });
+
+            if (data.booking) {
+                toast.success("Appointment booked successfully!");
+                navigate("/my-appointments");
+            }
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            toast.error(error.response?.data?.message || "Booking failed");
+        }
+    };
+
     useEffect(() => {
         fetchLawyerInfo();
-    },);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lawyerId, lawyers]);
 
     useEffect(() => {
         getAvailableSlots();
     }, [lawyerInfo]);
-
-    useEffect(() => {
-        console.log(lawSlots);
-    }, [lawSlots]);
 
     return (
         lawyerInfo && (
@@ -209,7 +244,7 @@ const Appointment = () => {
                             </p>
                         ))}
                     </div>
-                    <button className="bg-white text-black font-semibold px-8 py-4 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 hover:scale-105 shadow-lg shadow-white/10 tracking-tight mt-8">
+                    <button onClick={bookAppointment} className="bg-white text-black font-semibold px-8 py-4 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300 hover:scale-105 shadow-lg shadow-white/10 tracking-tight mt-8">
                         Book an Appointment
                     </button>
                 </div>

@@ -5,7 +5,19 @@ import User from '../models/user.model';
 
 export const getAllLawyers = async (req: Request, res: Response) => {
   try {
-    const lawyers = await LawyerProfile.find().populate('userId', 'name email');
+    const lawyerProfiles = await LawyerProfile.find().populate('userId', 'name email');
+    
+    // Flatten the data for the frontend
+    const lawyers = lawyerProfiles.map(profile => {
+      const user = profile.userId as any;
+      return {
+        ...profile.toObject(),
+        name: user?.name || 'Unknown',
+        email: user?.email || '',
+        userId: user?._id // Keep ID if needed
+      };
+    });
+
     res.status(200).json({ lawyers });
   } catch (error: any) {
     res.status(500).json({ message: 'Internal server error', error: error.message });

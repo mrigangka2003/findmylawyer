@@ -32,15 +32,16 @@ export const useLawyerStore = create<LawyerStore>((set) => ({
     fetchLawyers: async () => {
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch("http://localhost:8000/api/v1/lawyers");
+            const response = await fetch("http://localhost:8000/api/v1/lawyers/all");
             const data = await response.json();
             
-            if (data.success) {
-                set({ lawyers: data.data, isLoading: false });
+            if (data.lawyers) {
+                set({ lawyers: data.lawyers, isLoading: false });
             } else {
                 set({ error: data.message || "Failed to fetch lawyers", isLoading: false });
             }
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as Error;
             console.error("Error fetching lawyers:", error);
             set({ error: error.message || "Network error", isLoading: false });
         }

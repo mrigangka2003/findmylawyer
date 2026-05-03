@@ -12,10 +12,10 @@ const router = Router();
 
 router.use(verifyToken);
 
-router.post('/', createBooking);
-router.get('/user/:userId', getUserBookings);
-router.get('/lawyer/:lawyerId', getLawyerBookings);
-router.patch('/:bookingId/status', updateBookingStatus);
+router.post('/', authorize(['user']), createBooking);
+router.get('/user/my-bookings', authorize(['user']), getUserBookings);
+router.get('/lawyer/my-bookings', authorize(['lawyer']), getLawyerBookings);
+router.patch('/:bookingId/status', authorize(['lawyer']), updateBookingStatus);
 router.get('/admin/all', authorize(['admin']), getAllBookings);
 
 export default router;

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { AuthRequest } from '../middlewares/auth.middleware';
 
 import { Booking } from '../models/booking.model';
 
@@ -24,20 +25,22 @@ export const createBooking = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserBookings = async (req: Request, res: Response) => {
-  const { userId } = req.params;
+export const getUserBookings = async (req: AuthRequest, res: Response) => {
   try {
-    const userBookings = await Booking.find({ userId: userId as string }).populate('lawyerId', 'name email');
+    if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
+    
+    const userBookings = await Booking.find({ userId: req.user.id }).populate('lawyerId', 'name email');
     res.status(200).json({ bookings: userBookings });
   } catch (error: any) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
-export const getLawyerBookings = async (req: Request, res: Response) => {
-  const { lawyerId } = req.params;
+export const getLawyerBookings = async (req: AuthRequest, res: Response) => {
   try {
-    const lawyerBookings = await Booking.find({ lawyerId: lawyerId as string }).populate('userId', 'name email');
+    if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
+
+    const lawyerBookings = await Booking.find({ lawyerId: req.user.id }).populate('userId', 'name email');
     res.status(200).json({ bookings: lawyerBookings });
   } catch (error: any) {
     res.status(500).json({ message: 'Internal server error', error: error.message });

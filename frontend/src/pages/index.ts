@@ -6,6 +6,7 @@ import Login from "./Login";
 import MyAppointments from "./MyAppointments";
 import MyProfile from "./MyProfile";
 import Appointment from "./Appointment";
+import AdminDashboard from "./AdminDashboard";
 
 export {
     About,
@@ -15,5 +16,6 @@ export {
     Login,
     MyAppointments,
     MyProfile,
-    Appointment
+    Appointment,
+    AdminDashboard
 }

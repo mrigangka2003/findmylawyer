@@ -1,114 +1,74 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Scale, Shield, Award } from "lucide-react";
+import { ArrowRight, Terminal, Cpu, Search, Activity } from "lucide-react";
+import { useState } from "react";
 
 const HeroSection = () => {
     const navigate = useNavigate();
+    const [query, setQuery] = useState("");
 
     return (
-        <section className="relative min-h-screen flex flex-col pt-20 items-center justify-start overflow-hidden bg-black">
-            {/* Background Gradients & Orbs */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black"></div>
-            
-            <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-[100px] animate-pulse-ring"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-[120px] animate-pulse-ring-delay"></div>
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] selection:bg-white/30">
+            {/* Logic Grid Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
 
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 flex flex-col items-center text-center">
                 
-                {/* Left Text Content */}
-                <div className="text-left space-y-8">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border-white/20 text-white/80 text-sm font-medium animate-fade-in-up">
-                        <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        Trusted by 10,000+ Clients
-                    </div>
+                {/* AI Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-gray-400 text-xs font-mono mb-8 animate-fade-in">
+                    <Cpu className="w-3 h-3 text-white" />
+                    <span className="tracking-widest uppercase">Neural Intelligence v2.1 Activated</span>
+                </div>
 
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight font-display tracking-tight text-white animate-fade-in-up-delay">
-                        Expert Legal Help, <br/>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-500">
-                            When You Need It.
-                        </span>
-                    </h1>
+                {/* Refined Typography */}
+                <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-8 max-w-4xl">
+                    Legal Intelligence <br/>
+                    <span className="text-gray-500 italic font-light">Redefined.</span>
+                </h1>
 
-                    <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-lg animate-fade-in-up-delay-2">
-                        Connect with top-rated lawyers specialized in your case. Experience premium legal representation seamlessly online.
-                    </p>
+                <p className="text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed mb-12">
+                    Our AI scans thousands of case outcomes to match you with the precise legal expertise required for your jurisdiction. High-stakes law meets machine precision.
+                </p>
 
-                    <div className="flex flex-wrap items-center gap-4 animate-fade-in-up-delay-3">
+                {/* Smart Input Action */}
+                <div className="w-full max-w-2xl relative group animate-fade-in-up">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-gray-800 to-zinc-700 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div className="relative flex items-center bg-black border border-white/10 rounded-xl p-2 pl-6">
+                        <Search className="w-5 h-5 text-gray-500" />
+                        <input 
+                            type="text" 
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") navigate(`/lawyers`, { state: { aiQuery: query } });
+                            }}
+                            placeholder="Briefly describe your legal situation..." 
+                            className="bg-transparent border-none outline-none flex-1 px-4 text-white placeholder:text-gray-600 focus:ring-0"
+                        />
                         <button 
-                            onClick={() => navigate("/lawyers")}
-                            className="bg-white hover:bg-gray-200 text-black font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center gap-2 group"
+                            onClick={() => navigate(`/lawyers`, { state: { aiQuery: query } })}
+                            className="bg-white text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200 transition-colors"
                         >
-                            Find a Lawyer
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            Analyze Case
                         </button>
                     </div>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-in-up-delay-4">
-                        <div>
-                            <p className="text-3xl font-display font-bold text-white">98%</p>
-                            <p className="text-sm text-gray-400">Success Rate</p>
-                        </div>
-                        <div>
-                            <p className="text-3xl font-display font-bold text-white">500+</p>
-                            <p className="text-sm text-gray-400">Expert Lawyers</p>
-                        </div>
-                        <div>
-                            <p className="text-3xl font-display font-bold text-white">24/7</p>
-                            <p className="text-sm text-gray-400">Support Available</p>
-                        </div>
-                    </div>
                 </div>
 
-                {/* Right Visuals - Glass Cards */}
-                <div className="relative h-[600px] hidden lg:block animate-fade-in-scale">
-                    {/* Main Card */}
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] glass-card p-6 z-20 translate-x-12">
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                                <Scale className="w-6 h-6 text-white" />
-                            </div>
-                            <div>
-                                <h3 className="text-white font-semibold">Corporate Law</h3>
-                                <p className="text-sm text-gray-400">Expert consultations</p>
-                            </div>
+                {/* Technical Stats Bar */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mt-24 w-full max-w-4xl border-y border-white/5 py-10">
+                    {[
+                        { label: "Data Points", val: "2.4M+", icon: Activity },
+                        { label: "Accuracy", val: "99.2%", icon: Terminal },
+                        { label: "Match Time", val: "0.4s", icon: Cpu },
+                        { label: "Legal Experts", val: "500+", icon: ArrowRight }
+                    ].map((stat, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                            <stat.icon className="w-4 h-4 text-gray-600 mb-3" />
+                            <span className="text-2xl font-mono text-white mb-1">{stat.val}</span>
+                            <span className="text-[10px] uppercase tracking-widest text-gray-500">{stat.label}</span>
                         </div>
-                        <div className="space-y-3">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="h-12 bg-white/5 rounded-lg border border-white/5 flex items-center px-4 gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-gray-600/50"></div>
-                                    <div className="space-y-1.5 flex-1">
-                                        <div className="h-2 w-24 bg-white/20 rounded"></div>
-                                        <div className="h-1.5 w-16 bg-white/10 rounded"></div>
-                                    </div>
-                                    <div className="w-4 h-4 rounded-full border border-white/30"></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Floating elements */}
-                    <div className="absolute top-20 right-40 w-64 glass-card p-4 z-10 animate-float">
-                        <div className="flex items-center gap-3">
-                            <Shield className="w-8 h-8 text-gray-300" />
-                            <div>
-                                <p className="text-sm text-white font-medium">Secure Booking</p>
-                                <p className="text-xs text-gray-400">End-to-end encryption</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="absolute bottom-32 right-64 w-56 glass-card p-4 z-30 animate-float" style={{ animationDelay: '1s' }}>
-                        <div className="flex items-center gap-3">
-                            <Award className="w-8 h-8 text-gray-300" />
-                            <div>
-                                <p className="text-sm text-white font-medium">Top Rated</p>
-                                <p className="text-xs text-gray-400">Verified reviews</p>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
-
         </section>
     );
 };
