@@ -1,69 +1,79 @@
 import { Request, Response } from 'express';
 
-interface Booking {
-  id: number;
-  lawyerId: number;
-  userId: number;
-  date: string;
-  timeSlot: string;
-  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
-  createdAt: Date;
-}
-
-// Mock booking data
-let bookings: Booking[] = [];
+import { Booking } from '../models/booking.model';
 
 export const createBooking = async (req: Request, res: Response) => {
   const { lawyerId, userId, date, timeSlot } = req.body;
 
-  if (!lawyerId || !userId || !date || !timeSlot) {
-    return res.status(400).json({ message: 'Missing required booking fields' });
+  try {
+    if (!lawyerId || !userId || !date || !timeSlot) {
+      return res.status(400).json({ message: 'Missing required booking fields' });
+    }
+
+    const newBooking = await Booking.create({
+      lawyerId,
+      userId,
+      date,
+      timeSlot,
+      status: 'pending',
+    });
+
+    res.status(201).json({ message: 'Booking created successfully', booking: newBooking });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
-
-  const newBooking: Booking = {
-    id: bookings.length + 1,
-    lawyerId: parseInt(lawyerId),
-    userId: parseInt(userId),
-    date,
-    timeSlot,
-    status: 'pending',
-    createdAt: new Date(),
-  };
-
-  bookings.push(newBooking);
-  res.status(201).json({ message: 'Booking created successfully', booking: newBooking });
 };
 
 export const getUserBookings = async (req: Request, res: Response) => {
   const { userId } = req.params;
-  const userBookings = bookings.filter((b) => b.userId === parseInt(userId));
-  res.status(200).json({ bookings: userBookings });
+  try {
+    const userBookings = await Booking.find({ userId: userId as string }).populate('lawyerId', 'name email');
+    res.status(200).json({ bookings: userBookings });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 };
 
 export const getLawyerBookings = async (req: Request, res: Response) => {
   const { lawyerId } = req.params;
-  const lawyerBookings = bookings.filter((b) => b.lawyerId === parseInt(lawyerId));
-  res.status(200).json({ bookings: lawyerBookings });
+  try {
+    const lawyerBookings = await Booking.find({ lawyerId: lawyerId as string }).populate('userId', 'name email');
+    res.status(200).json({ bookings: lawyerBookings });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 };
 
 export const updateBookingStatus = async (req: Request, res: Response) => {
   const { bookingId } = req.params;
   const { status } = req.body;
 
-  const bookingIndex = bookings.findIndex((b) => b.id === parseInt(bookingId));
+  try {
+    if (!['accepted', 'rejected', 'cancelled'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
 
-  if (bookingIndex === -1) {
-    return res.status(404).json({ message: 'Booking not found' });
+    const booking = await Booking.findByIdAndUpdate(
+      bookingId as string,
+      { status },
+      { new: true }
+    );
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    res.status(200).json({ message: `Booking status updated to ${status}`, booking });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
-
-  if (!['accepted', 'rejected', 'cancelled'].includes(status)) {
-    return res.status(400).json({ message: 'Invalid status' });
-  }
-
-  bookings[bookingIndex].status = status as any;
-  res.status(200).json({ message: `Booking status updated to ${status}`, booking: bookings[bookingIndex] });
 };
 
 export const getAllBookings = async (req: Request, res: Response) => {
-  res.status(200).json({ bookings });
+  try {
+    const bookings = await Booking.find().populate('userId lawyerId', 'name email');
+    res.status(200).json({ bookings });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
 };

@@ -9,7 +9,8 @@ import bookingRoutes from './routes/booking.routes';
 import reviewRoutes from './routes/review.routes';
 import paymentRoutes from './routes/payment.routes';
 import authRoutes from './routes/auth.routes';
-import { verifyToken } from './middlewares/auth.middleware';
+import { verifyToken } from './middlewares/auth.middleware';  
+import connectDb from './config/db';
 
 const app = express();
 
@@ -30,6 +31,11 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Find My Lawyer API is running');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+connectDb().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+})
+.catch((err) => {
+  console.log(`MONGODB connection FAILED `, err);
 });

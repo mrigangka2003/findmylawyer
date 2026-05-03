@@ -4,7 +4,7 @@ import { JWT_SECRET } from '../constants';
 
 export interface AuthRequest extends Request {
   user?: {
-    id: number;
+    id: string;
     role: 'admin' | 'lawyer' | 'user';
   };
 }
@@ -17,7 +17,7 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: number; role: 'admin' | 'lawyer' | 'user' };
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; role: 'admin' | 'lawyer' | 'user' };
     req.user = decoded;
     next();
   } catch (error) {

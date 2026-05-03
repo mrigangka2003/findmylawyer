@@ -3,42 +3,67 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { JWT_SECRET } from '../constants';
 
-// Mock user database
-const users: any[] = [
-  { id: 1, email: 'admin@example.com', password: '$2a$10$YourHashedPasswordHere', role: 'admin' }, // password: password123 (hashed)
-  { id: 2, email: 'lawyer@example.com', password: '$2a$10$YourHashedPasswordHere', role: 'lawyer' },
-  { id: 3, email: 'user@example.com', password: '$2a$10$YourHashedPasswordHere', role: 'user' },
-];
+import User from '../models/user.model';
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  // In a real app, you'd find the user in the database and verify the hashed password
-  const user = users.find((u) => u.email === email);
+  try {
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+
+    res.status(200).json({ 
+      token, 
+      role: user.role,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
-
-  // Simplified for mock: just comparing strings or a dummy hash
-  // In reality: const isMatch = await bcrypt.compare(password, user.password);
-  const isMatch = password === 'password123'; 
-
-  if (!isMatch) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
-  const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
-
-  res.status(200).json({ token, role: user.role });
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password, role } = req.body;
+  const { name, email, password, role } = req.body;
   
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = { id: users.length + 1, email, password: hashedPassword, role };
-  
-  users.push(newUser);
-  res.status(201).json({ message: 'User registered successfully' });
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ 
+      name,
+      email, 
+      password: hashedPassword, 
+      role: role || 'user' 
+    });
+    
+    res.status(201).json({ 
+      message: 'User registered successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
 };
