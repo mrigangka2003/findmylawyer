@@ -19,26 +19,26 @@ async function seedAdmin() {
     const email = "mrigangkadatta15@gmail.com";
     const password = "password@123";
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        if(existingUser.role !== 'admin') {
-            console.log(`User exists but is not an admin. Updating role to admin...`);
-            existingUser.role = 'admin';
-            existingUser.password = await bcrypt.hash(password, 10);
-            await existingUser.save();
-            console.log(`Admin user successfully updated: ${email}`);
-        } else {
-            console.log(`Admin user already exists: ${email}`);
-        }
-        process.exit(0);
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create User
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      if (existingUser.role !== "admin") {
+        console.log(`User exists but is not an admin. Updating role to admin...`);
+        await User.updateOne(
+          { email },
+          { $set: { role: "admin", password: hashedPassword } }
+        );
+        console.log(`Admin user successfully updated: ${email}`);
+      } else {
+        console.log(`Admin user already exists: ${email}`);
+      }
+      process.exit(0);
+    }
+
     await User.create({
       name: "Mrigangka Datta",
-      email: email,
+      email,
       password: hashedPassword,
       role: "admin",
     });

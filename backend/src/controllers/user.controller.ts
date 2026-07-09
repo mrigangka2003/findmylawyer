@@ -7,7 +7,7 @@ export const getUserProfile = async (req: AuthRequest, res: Response) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password -resetPasswordToken -resetPasswordExpires');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -18,17 +18,27 @@ export const getUserProfile = async (req: AuthRequest, res: Response) => {
 };
 
 export const updateProfile = async (req: AuthRequest, res: Response) => {
-  const { name, email } = req.body;
+  const { name, email, phoneNumber, address, gender, dob, image } = req.body;
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
+
+    const updateData: Record<string, any> = {};
+    if (name !== undefined) updateData.name = name;
+    if (email !== undefined) updateData.email = email;
+    if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+    if (address !== undefined) updateData.address = address;
+    if (gender !== undefined) updateData.gender = gender;
+    if (dob !== undefined) updateData.dob = dob;
+    if (image !== undefined) updateData.image = image;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { name, email },
+      updateData,
       { new: true, runValidators: true }
-    ).select('-password');
-    
+    ).select('-password -resetPasswordToken -resetPasswordExpires');
+
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }

@@ -62,7 +62,7 @@ const Lawyers = () => {
         setAiResponse("");
         try {
             const { data } = await api.post("/ai/search", { query: queryToSearch });
-            setAiResponse(data.response?.choices?.[0]?.message?.content || "No recommendations found.");
+            setAiResponse(data.recommendation || "No recommendations found.");
         } catch (error) {
             toast.error("AI search failed.");
             console.log(error)

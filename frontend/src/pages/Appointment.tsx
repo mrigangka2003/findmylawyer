@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useTop from "../hooks/useTop";
 import { useEffect, useState } from "react";
-import { Info, IndianRupee } from "lucide-react";
+import { Info, IndianRupee, Star } from "lucide-react";
 
 import { useLawyerStore } from "../store/useLawyerStore";
 import { RelatedLawyers } from "../components";
+import ReviewSection from "../components/ReviewSection";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
 import api from "../utils/api";
@@ -176,11 +177,17 @@ const Appointment = () => {
                         </div>
                         <p className="flex mt-4">
                             Appointment fee:{" "}
-                            <span className="flex">
+                            <span className="flex items-center">
                                 <IndianRupee className="h-5" />
                                 {lawyerInfo.fees}
                             </span>
                         </p>
+                        {lawyerInfo.rating > 0 && (
+                            <div className="flex items-center gap-1.5 mt-2">
+                                <Star size={15} className="text-yellow-400 fill-yellow-400" />
+                                <span className="text-sm text-zinc-300">{lawyerInfo.rating} rating</span>
+                            </div>
+                        )}
                     </div>
                 </div>
                 {/* Booking Slots */}
@@ -256,6 +263,11 @@ const Appointment = () => {
                         lawyerId={lawyerId}
                         speciality={lawyerInfo.speciality}
                     />
+                )}
+
+                {/* Reviews */}
+                {lawyerId && (
+                    <ReviewSection lawyerId={lawyerId} />
                 )}
             </div>
         )

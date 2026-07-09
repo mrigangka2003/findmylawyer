@@ -15,6 +15,9 @@ import {
     Calendar,
     MapPin,
     Users,
+    Lock,
+    ChevronDown,
+    ChevronUp,
 } from "lucide-react";
 
 type Address = { 
@@ -38,6 +41,11 @@ export default function MyProfile() {
     const [userData, setUserData] = useState<UserData | null>(null);
     const [isEdit, setIsEdit] = useState(false);
     const [draft, setDraft] = useState<UserData | null>(null);
+    const [showPasswordSection, setShowPasswordSection] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmNewPassword, setConfirmNewPassword] = useState("");
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -84,6 +92,32 @@ export default function MyProfile() {
     const handleCancel = () => {
         setDraft(userData);
         setIsEdit(false);
+    };
+
+    const handleChangePassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (newPassword !== confirmNewPassword) {
+            toast.error("New passwords don't match");
+            return;
+        }
+        if (newPassword.length < 6) {
+            toast.error("Password must be at least 6 characters");
+            return;
+        }
+        setIsChangingPassword(true);
+        try {
+            await api.put("/auth/change-password", { currentPassword, newPassword });
+            toast.success("Password changed!");
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmNewPassword("");
+            setShowPasswordSection(false);
+        } catch (err) {
+            const error = err as AxiosError<{ message: string }>;
+            toast.error(error.response?.data?.message || "Failed to change password");
+        } finally {
+            setIsChangingPassword(false);
+        }
     };
 
     if (!userData || !draft) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>;
@@ -191,6 +225,47 @@ export default function MyProfile() {
                                 MapPin
                             )}
                     </div>
+                </div>
+
+                {/* Change Password Section */}
+                <div className="mt-6 border-t border-white/10 pt-6">
+                    <button
+                        onClick={() => setShowPasswordSection(!showPasswordSection)}
+                        className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition"
+                    >
+                        <Lock size={14} />
+                        Change Password
+                        {showPasswordSection ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                    </button>
+
+                    {showPasswordSection && (
+                        <form onSubmit={handleChangePassword} className="mt-4 space-y-3 max-w-md">
+                            {[
+                                { label: "Current Password", value: currentPassword, setter: setCurrentPassword },
+                                { label: "New Password", value: newPassword, setter: setNewPassword },
+                                { label: "Confirm New Password", value: confirmNewPassword, setter: setConfirmNewPassword },
+                            ].map(({ label, value, setter }) => (
+                                <div key={label}>
+                                    <label className="text-xs text-zinc-400 mb-1 block">{label}</label>
+                                    <input
+                                        type="password"
+                                        value={value}
+                                        onChange={(e) => setter(e.target.value)}
+                                        required
+                                        className="w-full rounded-md bg-white/10 px-3 py-2 text-white text-sm ring-1 ring-white/20 focus:outline-none focus:ring-indigo-500"
+                                    />
+                                </div>
+                            ))}
+                            <button
+                                type="submit"
+                                disabled={isChangingPassword}
+                                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50"
+                            >
+                                <Lock size={13} />
+                                {isChangingPassword ? "Updating..." : "Update Password"}
+                            </button>
+                        </form>
+                    )}
                 </div>
             </div>
         </main>

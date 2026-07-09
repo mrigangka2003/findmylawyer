@@ -6,6 +6,7 @@ export interface IBooking extends Document {
   date: string;
   timeSlot: string;
   status: string;
+  paymentId?: mongoose.Types.ObjectId;
   createdAt: Date;
 }
 
@@ -30,8 +31,14 @@ const bookingSchema = new Schema<IBooking>({
   },
   status: {
     type: String,
+    enum: ['pending', 'confirmed', 'accepted', 'rejected', 'cancelled'],
     default: 'pending',
     required: true
+  },
+  paymentId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Payment',
+    default: null,
   },
   createdAt: {
     type: Date,
@@ -39,4 +46,4 @@ const bookingSchema = new Schema<IBooking>({
   }
 });
 
-export const Booking = mongoose.model<IBooking>("Booking", bookingSchema);
+export const Booking = mongoose.model<IBooking>("Booking", bookingSchema);

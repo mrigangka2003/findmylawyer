@@ -116,7 +116,7 @@ export const addLawyer = async (req: AuthRequest, res: Response) => {
 
 export const allBookings = async (req:AuthRequest,res:Response)=>{
   try{
-    const bookings = Booking.find() ;
+    const bookings = await Booking.find().populate('userId lawyerId', 'name email');
     return res.status(200).json({bookings});
   }catch(error:any){
     console.log(error,"error");
@@ -128,7 +128,7 @@ export const allBookings = async (req:AuthRequest,res:Response)=>{
 export const getBookingDetails = async(req:AuthRequest,res:Response)=>{
   try{
     const {id} = req.params;
-    const booking = Booking.findById(id);
+    const booking = await Booking.findById(id).populate('userId lawyerId', 'name email');
     if(!booking){
       return res.status(404).json({message:'Booking not found'});
     }
