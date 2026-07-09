@@ -53,7 +53,7 @@ const RelatedLawyers = ({
                     <div
                         onClick={() => {
                             navigate(`/appointment/${item._id}`);
-                            scrollTo(0, 0);
+                            window.scrollTo(0, 0);
                         }}
                         key={index}
                         className="group relative bg-gradient-to-br from-zinc-900 to-zinc-800 border border-white/20 rounded-2xl overflow-hidden cursor-pointer hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10"
@@ -67,6 +67,8 @@ const RelatedLawyers = ({
                                 className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                                 src={item.image}
                                 alt={item.name}
+                                loading="lazy"
+                                decoding="async"
                             />
                             {/* Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -120,7 +122,7 @@ const RelatedLawyers = ({
             <button
                 onClick={() => {
                     navigate("/lawyers");
-                    scrollTo(0, 0);
+                    window.scrollTo(0, 0);
                 }}
                 className="group relative px-8 py-3 bg-white text-black font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/25 flex items-center gap-2 border border-gray-200"
             >

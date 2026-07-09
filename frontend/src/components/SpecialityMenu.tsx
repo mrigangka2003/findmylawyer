@@ -22,7 +22,7 @@ const SpecialityMenu = () => {
 
                         return (
                             <Link
-                                onClick={() => scrollTo(0, 0)}
+                                onClick={() => window.scrollTo(0, 0)}
                                 key={formattedName}
                                 to={`/lawyers/${formattedName}`}
                                 className="bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-gray-300 px-6 py-3 rounded-full transition-all duration-300 text-sm font-medium"
