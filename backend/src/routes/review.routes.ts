@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { createReview, getLawyerReviews, deleteReview } from '../controllers/review.controller';
+import { verifyToken } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.post('/', createReview);
 router.get('/lawyer/:lawyerId', getLawyerReviews);
-router.delete('/:reviewId', deleteReview);
+router.post('/', verifyToken, createReview);
+router.delete('/:reviewId', verifyToken, deleteReview);
 
 export default router;

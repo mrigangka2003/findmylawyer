@@ -10,6 +10,7 @@ export type Lawyer = {
     experience: string;
     about: string;
     fees: number;
+    rating?: number;
     address: {
         line1: string;
         line2?: string;

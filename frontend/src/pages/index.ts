@@ -7,6 +7,8 @@ import MyAppointments from "./MyAppointments";
 import MyProfile from "./MyProfile";
 import Appointment from "./Appointment";
 import AdminDashboard from "./AdminDashboard";
+import LawyerDashboard from "./LawyerDashboard";
+import ForgotPassword from "./ForgotPassword";
 
 export {
     About,
@@ -17,5 +19,7 @@ export {
     MyAppointments,
     MyProfile,
     Appointment,
-    AdminDashboard
+    AdminDashboard,
+    LawyerDashboard,
+    ForgotPassword,
 }

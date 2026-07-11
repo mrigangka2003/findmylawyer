@@ -52,7 +52,7 @@ export const updateBookingStatus = async (req: Request, res: Response) => {
   const { status } = req.body;
 
   try {
-    if (!['accepted', 'rejected', 'cancelled'].includes(status)) {
+    if (!['accepted', 'confirmed', 'rejected', 'cancelled'].includes(status)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
 

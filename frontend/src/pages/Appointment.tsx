@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useTop from "../hooks/useTop";
 import { useEffect, useState } from "react";
-import { Info, IndianRupee } from "lucide-react";
+import { Info, IndianRupee, Star } from "lucide-react";
 
 import { useLawyerStore } from "../store/useLawyerStore";
 import { RelatedLawyers } from "../components";
+import ReviewSection from "../components/ReviewSection";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
 import api from "../utils/api";
@@ -159,7 +160,7 @@ const Appointment = () => {
                         </p>
 
                         <div className="mb-6">
-                            <span className="inline-block bg-green-600 text-white text-sm px-4 py-1.5 rounded-full">
+                            <span className="inline-block border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white">
                                 {lawyerInfo.experience} Years Experience
                             </span>
                         </div>
@@ -176,11 +177,17 @@ const Appointment = () => {
                         </div>
                         <p className="flex mt-4">
                             Appointment fee:{" "}
-                            <span className="flex">
+                            <span className="flex items-center">
                                 <IndianRupee className="h-5" />
                                 {lawyerInfo.fees}
                             </span>
                         </p>
+                        {(lawyerInfo.rating ?? 0) > 0 && (
+                            <div className="flex items-center gap-1.5 mt-2">
+                                <Star size={15} className="fill-white text-white" />
+                                <span className="text-sm text-zinc-300">{lawyerInfo.rating} rating</span>
+                            </div>
+                        )}
                     </div>
                 </div>
                 {/* Booking Slots */}
@@ -256,6 +263,11 @@ const Appointment = () => {
                         lawyerId={lawyerId}
                         speciality={lawyerInfo.speciality}
                     />
+                )}
+
+                {/* Reviews */}
+                {lawyerId && (
+                    <ReviewSection lawyerId={lawyerId} />
                 )}
             </div>
         )

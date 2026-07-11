@@ -1,10 +1,10 @@
 import Hero from "../components/Hero";
 import useTop from "../hooks/useTop";
 import SpecialityMenu from "../components/SpecialityMenu";
-import TopLawyers from "../components/TopLawyers";
 import Banner from "../components/Banner";
 import Features from "../components/Features";
 import FAQ from "../components/FAQ";
+import TopLawyers from "../components/TopLawyers";
 
 const Home = () => {
     useTop();
@@ -12,8 +12,8 @@ const Home = () => {
         <div className="bg-black">
             <Hero/>
             <Features />
+            <TopLawyers />
             <SpecialityMenu/>
-            <TopLawyers/>
             <Banner/>
             <FAQ />
         </div>

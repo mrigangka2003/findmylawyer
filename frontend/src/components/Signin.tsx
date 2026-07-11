@@ -3,7 +3,7 @@ import api from "../utils/api";
 import { AxiosError } from "axios";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -67,12 +67,12 @@ export default function SignIn() {
                 </div>
 
                 <div className="flex justify-end">
-                    <button
-                        type="button"
+                    <Link
+                        to="/forgot-password"
                         className="text-sm text-zinc-400 hover:text-white transition"
                     >
                         Forgot Password?
-                    </button>
+                    </Link>
                 </div>
 
                 <button

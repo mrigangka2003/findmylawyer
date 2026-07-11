@@ -2,11 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        background: #080808;
+    }
+
+    body {
+        min-width: 320px;
+        background: #080808;
+        color: #f4f4f5;
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background: #f4f4f5;
+        color: #09090b;
+    }
+}
+
 ::-webkit-scrollbar {
     @apply hidden;
 }
 
 @layer utilities {
+    .grid-fade {
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: radial-gradient(ellipse 75% 70% at 48% 38%, black 10%, transparent 76%);
+    }
+
+    .eyebrow {
+        @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500;
+    }
+
     .glass {
         @apply bg-black/60 backdrop-blur-md border border-white/10 shadow-xl;
     }

@@ -1,76 +1,164 @@
-import { useNavigate } from "react-router-dom";
-import { ArrowRight, Terminal, Cpu, Search, Activity } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+  Check,
+  MapPin,
+  Search,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
-const HeroSection = () => {
-    const navigate = useNavigate();
-    const [query, setQuery] = useState("");
+const suggestedMatters = [
+  "Property dispute",
+  "Family & divorce",
+  "Business & contracts",
+  "Criminal defence",
+];
 
-    return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] selection:bg-white/30">
-            {/* Logic Grid Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+const Hero = () => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
 
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-24 flex flex-col items-center text-center">
-                
-                {/* AI Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-gray-400 text-xs font-mono mb-8 animate-fade-in">
-                    <Cpu className="w-3 h-3 text-white" />
-                    <span className="tracking-widest uppercase">Neural Intelligence v2.1 Activated</span>
-                </div>
+  const beginSearch = (matter = query) => {
+    const value = matter.trim();
+    navigate("/lawyers", { state: value ? { aiQuery: value } : undefined });
+  };
 
-                {/* Refined Typography */}
-                <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-8 max-w-4xl">
-                    Legal Intelligence <br/>
-                    <span className="text-gray-500 italic font-light">Redefined.</span>
-                </h1>
+  return (
+    <section className="relative isolate overflow-hidden border-b border-white/10 bg-[#080808]">
+      <div className="pointer-events-none absolute inset-0 grid-fade opacity-70" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[35rem] w-[55rem] -translate-x-1/2 rounded-full bg-white/[0.035] blur-[90px]" />
 
-                <p className="text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed mb-12">
-                    Our AI scans thousands of case outcomes to match you with the precise legal expertise required for your jurisdiction. High-stakes law meets machine precision.
-                </p>
+      <div className="relative mx-auto grid min-h-[calc(100vh-4.75rem)] max-w-7xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.1fr_.9fr] lg:px-8 lg:py-24">
+        <div className="max-w-3xl">
+          <div className="mb-8 inline-flex items-center gap-2 border border-white/15 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-300">
+            <Sparkles className="h-3.5 w-3.5" />
+            AI-curated legal matches
+          </div>
 
-                {/* Smart Input Action */}
-                <div className="w-full max-w-2xl relative group animate-fade-in-up">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-gray-800 to-zinc-700 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                    <div className="relative flex items-center bg-black border border-white/10 rounded-xl p-2 pl-6">
-                        <Search className="w-5 h-5 text-gray-500" />
-                        <input 
-                            type="text" 
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") navigate(`/lawyers`, { state: { aiQuery: query } });
-                            }}
-                            placeholder="Briefly describe your legal situation..." 
-                            className="bg-transparent border-none outline-none flex-1 px-4 text-white placeholder:text-gray-600 focus:ring-0"
-                        />
-                        <button 
-                            onClick={() => navigate(`/lawyers`, { state: { aiQuery: query } })}
-                            className="bg-white text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200 transition-colors"
-                        >
-                            Analyze Case
-                        </button>
-                    </div>
-                </div>
+          <h1 className="max-w-3xl font-display text-5xl font-medium leading-[0.94] tracking-[-0.055em] text-white sm:text-6xl lg:text-[5.5rem]">
+            The right legal mind.
+            <span className="block text-zinc-500">Curated for your case.</span>
+          </h1>
 
-                {/* Technical Stats Bar */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mt-24 w-full max-w-4xl border-y border-white/5 py-10">
-                    {[
-                        { label: "Data Points", val: "2.4M+", icon: Activity },
-                        { label: "Accuracy", val: "99.2%", icon: Terminal },
-                        { label: "Match Time", val: "0.4s", icon: Cpu },
-                        { label: "Legal Experts", val: "500+", icon: ArrowRight }
-                    ].map((stat, i) => (
-                        <div key={i} className="flex flex-col items-center">
-                            <stat.icon className="w-4 h-4 text-gray-600 mb-3" />
-                            <span className="text-2xl font-mono text-white mb-1">{stat.val}</span>
-                            <span className="text-[10px] uppercase tracking-widest text-gray-500">{stat.label}</span>
-                        </div>
-                    ))}
-                </div>
+          <p className="mt-7 max-w-xl text-base leading-7 text-zinc-400 sm:text-lg">
+            Describe what you are facing in plain language. We use your needs,
+            location, and legal area to surface lawyers worth your time.
+          </p>
+
+          <div className="mt-10 border border-white/15 bg-[#101010] p-2 shadow-2xl shadow-black/40">
+            <div className="flex items-center gap-3 border-b border-white/10 px-3 py-2.5 text-xs text-zinc-500">
+              <Search className="h-4 w-4" />
+              Tell us about your legal matter
             </div>
-        </section>
-    );
+            <div className="flex flex-col gap-2 p-2 sm:flex-row">
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onKeyDown={(event) => event.key === "Enter" && beginSearch()}
+                aria-label="Describe your legal matter"
+                placeholder="e.g. I need help reviewing a rental agreement in Bengaluru"
+                className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+              />
+              <button
+                type="button"
+                onClick={() => beginSearch()}
+                className="group inline-flex items-center justify-center gap-2 bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"
+              >
+                Find my matches
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="mr-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-600">
+              Try
+            </span>
+            {suggestedMatters.map((matter) => (
+              <button
+                type="button"
+                key={matter}
+                onClick={() => beginSearch(matter)}
+                className="border border-white/10 px-3 py-1.5 text-xs text-zinc-400 transition hover:border-white/40 hover:bg-white hover:text-black"
+              >
+                {matter}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-10 grid max-w-2xl gap-4 border-t border-white/10 pt-6 sm:grid-cols-3">
+            {[
+              "A considered shortlist, not a directory",
+              "Verified profiles and transparent fees",
+              "Book a consultation when ready",
+            ].map((item) => (
+              <div key={item} className="flex gap-2 text-xs leading-5 text-zinc-400">
+                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white" />
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-md lg:ml-auto lg:mr-0">
+          <div className="absolute -left-8 top-16 h-48 w-48 rounded-full border border-white/10" />
+          <div className="absolute -bottom-9 right-8 h-24 w-24 border border-white/10 bg-white/[0.03]" />
+
+          <div className="relative border border-white/15 bg-[#111] p-5 shadow-[0_25px_70px_rgba(0,0,0,0.55)] sm:p-6">
+            <div className="flex items-start justify-between border-b border-white/10 pb-5">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.17em] text-zinc-500">
+                  Your AI shortlist
+                </p>
+                <h2 className="mt-2 font-display text-2xl text-white">A better starting point</h2>
+              </div>
+              <div className="flex h-9 w-9 items-center justify-center border border-white/15 bg-white text-black">
+                <Sparkles className="h-4 w-4" />
+              </div>
+            </div>
+
+            <div className="space-y-3 py-5">
+              {[
+                { initials: "AK", name: "Adv. A. Khanna", detail: "Property & documentation", match: "98% match" },
+                { initials: "RN", name: "Adv. R. Nair", detail: "Civil litigation", match: "94% match" },
+                { initials: "SM", name: "Adv. S. Mehta", detail: "Commercial disputes", match: "91% match" },
+              ].map((lawyer, index) => (
+                <div key={lawyer.name} className="flex items-center gap-3 border border-white/10 bg-black/30 p-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-zinc-200 text-xs font-bold text-black">
+                    {lawyer.initials}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-white">{lawyer.name}</p>
+                    <p className="mt-0.5 truncate text-xs text-zinc-500">{lawyer.detail}</p>
+                  </div>
+                  <span className="text-[11px] font-medium text-zinc-300">{lawyer.match}</span>
+                  <span className="sr-only">Rank {index + 1}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 border-t border-white/10 pt-5 text-xs">
+              <div className="flex items-center gap-2 text-zinc-400">
+                <ShieldCheck className="h-4 w-4 text-white" />
+                Verified profiles
+              </div>
+              <div className="flex items-center justify-end gap-2 text-zinc-400">
+                <MapPin className="h-4 w-4 text-white" />
+                Near your city
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute -bottom-5 -left-4 border border-white/15 bg-white px-4 py-3 text-black shadow-xl sm:-left-10">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em]">Match rationale</p>
+            <p className="mt-1 text-xs text-zinc-700">Based on your matter, location & priority.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
-export default HeroSection;
+export default Hero;
