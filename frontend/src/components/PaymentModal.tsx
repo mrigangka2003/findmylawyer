@@ -14,6 +14,42 @@ type Props = {
   onSuccess: (bookingId: string) => void;
 };
 
+type PaymentOrder = {
+  id: string;
+  amount?: number;
+  currency?: string;
+};
+
+type RazorpayPaymentResponse = {
+  razorpay_order_id?: string;
+  razorpay_payment_id?: string;
+  razorpay_signature?: string;
+  isMock?: boolean;
+  amount?: number;
+  paymentMethod?: "mock" | "razorpay";
+};
+
+type RazorpayCheckoutOptions = {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayPaymentResponse) => Promise<void>;
+  prefill: { name: string; email: string };
+  theme: { color: string };
+  modal: { ondismiss: () => void };
+};
+
+type RazorpayCheckout = { open: () => void };
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: RazorpayCheckoutOptions) => RazorpayCheckout;
+  }
+}
+
 export default function PaymentModal({
   bookingId,
   amount,
@@ -49,7 +85,7 @@ export default function PaymentModal({
         name: "FindMyLawyer",
         description: `Consultation with ${lawyerName}`,
         order_id: orderData.order.id,
-        handler: async (response: any) => {
+        handler: async (response: RazorpayPaymentResponse) => {
           // Step 3: Verify payment
           await verifyAndConfirm({
             razorpay_order_id: response.razorpay_order_id,
@@ -58,7 +94,7 @@ export default function PaymentModal({
           });
         },
         prefill: { name: "", email: "" },
-        theme: { color: "#4f46e5" },
+        theme: { color: "#18181b" },
         modal: {
           ondismiss: () => {
             setIsProcessing(false);
@@ -67,13 +103,12 @@ export default function PaymentModal({
         },
       };
 
-      const win = window as any;
-      if (!win.Razorpay) {
+      if (!window.Razorpay) {
         toast.error("Razorpay not loaded. Using mock payment.");
         await processMockPayment(orderData.order);
         return;
       }
-      const rzp = new win.Razorpay(options);
+      const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -82,7 +117,7 @@ export default function PaymentModal({
     }
   };
 
-  const processMockPayment = async (order: any) => {
+  const processMockPayment = async (order: PaymentOrder) => {
     try {
       await verifyAndConfirm({ isMock: true, amount, paymentMethod: "mock" }, order);
     } catch {
@@ -90,7 +125,7 @@ export default function PaymentModal({
     }
   };
 
-  const verifyAndConfirm = async (paymentResponse: any, order?: any) => {
+  const verifyAndConfirm = async (paymentResponse: RazorpayPaymentResponse, order?: PaymentOrder) => {
     try {
       const { data } = await api.post("/payments/verify", {
         bookingId,
@@ -120,7 +155,7 @@ export default function PaymentModal({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <CreditCard size={20} className="text-indigo-400" /> Confirm Payment
+            <CreditCard size={20} className="text-white" /> Confirm Payment
           </h2>
           {!isProcessing && !isDone && (
             <button onClick={onClose} className="text-zinc-500 hover:text-white transition">
@@ -131,7 +166,7 @@ export default function PaymentModal({
 
         {isDone ? (
           <div className="text-center py-6">
-            <CheckCircle2 size={56} className="text-green-400 mx-auto mb-3" />
+            <CheckCircle2 size={56} className="mx-auto mb-3 text-white" />
             <h3 className="text-xl font-semibold text-white">Payment Successful!</h3>
             <p className="text-zinc-400 text-sm mt-1">Your booking has been confirmed.</p>
           </div>
@@ -160,14 +195,14 @@ export default function PaymentModal({
             </div>
 
             <div className="flex items-center gap-2 text-xs text-zinc-500 mb-5">
-              <Shield size={12} className="text-green-400" />
+              <Shield size={12} className="text-white" />
               Payments are secure and encrypted
             </div>
 
             <button
               onClick={handlePay}
               disabled={isProcessing}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 font-semibold text-black transition hover:bg-zinc-200 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>

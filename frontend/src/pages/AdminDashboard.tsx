@@ -32,7 +32,6 @@ export default function AdminDashboard() {
     useEffect(() => {
         if (activeTab === 'users') fetchUsers();
         if (activeTab === 'lawyers') fetchLawyerUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeTab]);
 
     const fetchUsers = async () => {
@@ -101,8 +100,8 @@ export default function AdminDashboard() {
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8 border-b border-zinc-800 pb-6">
-                    <div className="w-14 h-14 bg-indigo-600/20 border border-indigo-600/30 rounded-2xl flex items-center justify-center">
-                        <Shield size={26} className="text-indigo-400" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10">
+                        <Shield size={26} className="text-white" />
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
@@ -139,7 +138,7 @@ export default function AdminDashboard() {
                     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
                         <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
                             <h2 className="font-semibold flex items-center gap-2">
-                                <Users size={16} className="text-indigo-400" /> Registered Users
+                                <Users size={16} className="text-white" /> Registered Users
                             </h2>
                             <span className="text-xs text-zinc-500">{users.length} users</span>
                         </div>
@@ -155,7 +154,7 @@ export default function AdminDashboard() {
                                         </div>
                                         <button
                                             onClick={() => handleDeleteUser(u._id)}
-                                            className="text-zinc-600 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition"
+                                            className="rounded-lg p-1.5 text-zinc-600 transition hover:bg-white/10 hover:text-white"
                                         >
                                             <Trash2 size={15} />
                                         </button>
@@ -174,7 +173,7 @@ export default function AdminDashboard() {
                     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
                         <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
                             <h2 className="font-semibold flex items-center gap-2">
-                                <Shield size={16} className="text-indigo-400" /> Registered Lawyers
+                                <Shield size={16} className="text-white" /> Registered Lawyers
                             </h2>
                             <span className="text-xs text-zinc-500">{lawyers.length} lawyers</span>
                         </div>
@@ -190,7 +189,7 @@ export default function AdminDashboard() {
                                         </div>
                                         <button
                                             onClick={() => handleDeleteUser(l._id)}
-                                            className="text-zinc-600 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition"
+                                            className="rounded-lg p-1.5 text-zinc-600 transition hover:bg-white/10 hover:text-white"
                                         >
                                             <Trash2 size={15} />
                                         </button>
@@ -208,7 +207,7 @@ export default function AdminDashboard() {
                 {activeTab === 'create-lawyer' && (
                     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-2xl mx-auto shadow-2xl">
                         <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
-                            <UserPlus className="text-indigo-400" /> Register New Lawyer
+                            <UserPlus className="text-white" /> Register New Lawyer
                         </h2>
                         <form onSubmit={handleCreateLawyer} className="space-y-5">
                             {[
@@ -223,7 +222,7 @@ export default function AdminDashboard() {
                                         value={value}
                                         onChange={(e) => setter(e.target.value)}
                                         required
-                                        className="w-full bg-black border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none transition"
+                                        className="w-full rounded-xl border border-zinc-700 bg-black px-4 py-3 text-sm outline-none transition focus:border-white"
                                     />
                                 </div>
                             ))}
@@ -233,7 +232,7 @@ export default function AdminDashboard() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition disabled:opacity-50"
+                                className="w-full rounded-xl bg-white py-3 font-semibold text-black transition hover:bg-zinc-200 disabled:opacity-50"
                             >
                                 {isLoading ? "Creating..." : "Create Lawyer Account"}
                             </button>

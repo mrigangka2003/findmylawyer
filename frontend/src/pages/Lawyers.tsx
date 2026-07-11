@@ -99,10 +99,10 @@ const Lawyers = () => {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* AI Search Section */}
-                <div className="mb-10 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-indigo-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div className="relative mb-10 overflow-hidden border border-white/15 bg-[#111] p-6 shadow-xl">
                     <div className="absolute top-0 right-0 p-4 opacity-10"><Bot size={100} /></div>
                     <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <Sparkles className="text-indigo-400" size={20} /> Ask AI to find a lawyer
+                        <Sparkles className="text-white" size={20} /> Ask AI to find a lawyer
                     </h2>
                     <div className="flex gap-4">
                         <input 
@@ -110,12 +110,12 @@ const Lawyers = () => {
                             value={aiQuery}
                             onChange={(e) => setAiQuery(e.target.value)}
                             placeholder="Describe your legal issue (e.g., 'I need someone for a property dispute in Mumbai')"
-                            className="flex-1 bg-black/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                            className="flex-1 border border-zinc-700 bg-black/50 px-4 py-3 text-white placeholder-zinc-500 outline-none transition-colors focus:border-white"
                         />
                         <button 
                             onClick={() => handleAiSearch(aiQuery)}
                             disabled={isAiLoading}
-                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50"
+                            className="bg-white px-6 py-3 font-medium text-black transition-colors hover:bg-zinc-200 disabled:opacity-50"
                         >
                             {isAiLoading ? "Thinking..." : "Search"}
                         </button>
@@ -211,9 +211,9 @@ const Lawyers = () => {
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
                                         {/* Status Badge */}
-                                        <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-2.5 py-1">
-                                            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                                            <span className="text-green-400 text-xs font-medium">
+                                        <div className="absolute right-3 top-3 flex items-center gap-1.5 border border-white/25 bg-black/65 px-2.5 py-1 backdrop-blur-sm">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse"></span>
+                                            <span className="text-xs font-medium text-white">
                                                 Available
                                             </span>
                                         </div>

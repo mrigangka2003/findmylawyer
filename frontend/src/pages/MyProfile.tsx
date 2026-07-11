@@ -132,7 +132,7 @@ export default function MyProfile() {
                     {!isEdit ? (
                         <button
                             onClick={() => setIsEdit(true)}
-                            className="flex items-center gap-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition"
+                            className="flex items-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
                         >
                             <Edit3 size={16} /> Edit
                         </button>
@@ -140,13 +140,13 @@ export default function MyProfile() {
                         <div className="flex gap-2">
                             <button
                                 onClick={handleSave}
-                                className="flex items-center gap-2 rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white hover:bg-green-500 transition"
+                                className="flex items-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
                             >
                                 <Check size={16} /> Save
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 transition"
+                                className="flex items-center gap-2 rounded-md border border-white/15 bg-zinc-800 px-3 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-700"
                             >
                                 <X size={16} /> Cancel
                             </button>
@@ -252,14 +252,14 @@ export default function MyProfile() {
                                         value={value}
                                         onChange={(e) => setter(e.target.value)}
                                         required
-                                        className="w-full rounded-md bg-white/10 px-3 py-2 text-white text-sm ring-1 ring-white/20 focus:outline-none focus:ring-indigo-500"
+                                        className="w-full rounded-md bg-white/10 px-3 py-2 text-sm text-white ring-1 ring-white/20 outline-none focus:ring-white"
                                     />
                                 </div>
                             ))}
                             <button
                                 type="submit"
                                 disabled={isChangingPassword}
-                                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50"
+                                className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 disabled:opacity-50"
                             >
                                 <Lock size={13} />
                                 {isChangingPassword ? "Updating..." : "Update Password"}
@@ -289,7 +289,7 @@ function renderField(
                     type="text"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-full rounded-md bg-white/10 px-3 py-2 text-white placeholder-neutral-500 ring-1 ring-white/20 focus:outline-none focus:ring-indigo-500"
+                    className="w-full rounded-md bg-white/10 px-3 py-2 text-white placeholder-neutral-500 ring-1 ring-white/20 outline-none focus:ring-white"
                 />
             ) : (
                 <p className="px-3 py-2 text-white">{value}</p>

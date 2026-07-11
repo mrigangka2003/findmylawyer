@@ -17,6 +17,7 @@ import {
   Briefcase,
   BookOpen,
   Clock,
+  type LucideIcon,
 } from "lucide-react";
 import MyAppointments from "./MyAppointments";
 
@@ -40,6 +41,15 @@ type AvailabilitySlot = {
   endTime: string;
   slotDuration: number;
 };
+
+type TextProfileField = "name" | "speciality" | "degree" | "experience";
+
+const profileFields: Array<{ label: string; field: TextProfileField; icon: LucideIcon }> = [
+  { label: "Full Name", field: "name", icon: User },
+  { label: "Speciality", field: "speciality", icon: BookOpen },
+  { label: "Degree", field: "degree", icon: BookOpen },
+  { label: "Experience (text)", field: "experience", icon: Briefcase },
+];
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -68,7 +78,6 @@ export default function LawyerDashboard() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const [availability, setAvailability] = useState<AvailabilitySlot[]>([]);
   const [availabilityDraft, setAvailabilityDraft] = useState<AvailabilitySlot[]>([]);
   const [isSavingAvail, setIsSavingAvail] = useState(false);
 
@@ -109,7 +118,6 @@ export default function LawyerDashboard() {
     if (!user) return;
     try {
       const { data } = await api.get(`/lawyers/${user.id}/availability`);
-      setAvailability(data.availability || []);
       setAvailabilityDraft(data.availability || []);
     } catch {
       // ignore
@@ -135,7 +143,6 @@ export default function LawyerDashboard() {
     setIsSavingAvail(true);
     try {
       await api.put("/lawyers/me/availability", { availabilityData: availabilityDraft });
-      setAvailability(availabilityDraft);
       toast.success("Availability updated!");
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -177,8 +184,8 @@ export default function LawyerDashboard() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8 pb-6 border-b border-zinc-800">
-          <div className="w-14 h-14 rounded-2xl bg-indigo-600/20 border border-indigo-600/30 flex items-center justify-center">
-            <Briefcase size={26} className="text-indigo-400" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10">
+            <Briefcase size={26} className="text-white" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">Lawyer Dashboard</h1>
@@ -211,12 +218,12 @@ export default function LawyerDashboard() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold flex items-center gap-2">
-                <User size={20} className="text-indigo-400" /> Professional Profile
+                <User size={20} className="text-white" /> Professional Profile
               </h2>
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-sm font-medium transition"
+                  className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
                 >
                   <Edit3 size={15} /> Edit Profile
                 </button>
@@ -225,7 +232,7 @@ export default function LawyerDashboard() {
                   <button
                     onClick={handleSaveProfile}
                     disabled={isSaving}
-                    className="flex items-center gap-2 bg-green-600 hover:bg-green-500 px-4 py-2 rounded-xl text-sm font-medium transition disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 disabled:opacity-50"
                   >
                     <Check size={15} /> {isSaving ? "Saving..." : "Save"}
                   </button>
@@ -253,31 +260,26 @@ export default function LawyerDashboard() {
                     value={draft.image}
                     onChange={(e) => setDraft({ ...draft, image: e.target.value })}
                     placeholder="https://example.com/photo.jpg"
-                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                   />
                 </div>
               )}
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
-              {[
-                { label: "Full Name", field: "name", icon: User },
-                { label: "Speciality", field: "speciality", icon: BookOpen },
-                { label: "Degree", field: "degree", icon: BookOpen },
-                { label: "Experience (text)", field: "experience", icon: Briefcase },
-              ].map(({ label, field, icon: Icon }) => (
+              {profileFields.map(({ label, field, icon: Icon }) => (
                 <div key={field}>
                   <label className="flex items-center gap-1.5 text-xs text-zinc-400 mb-1">
                     <Icon size={12} /> {label}
                   </label>
                   {isEditing ? (
                     <input
-                      value={(draft as any)[field]}
+                      value={draft[field]}
                       onChange={(e) => setDraft({ ...draft, [field]: e.target.value })}
-                      className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                      className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                     />
                   ) : (
-                    <p className="px-3 py-2 text-sm text-white">{(profile as any)[field] || "—"}</p>
+                    <p className="px-3 py-2 text-sm text-white">{profile[field] || "—"}</p>
                   )}
                 </div>
               ))}
@@ -292,7 +294,7 @@ export default function LawyerDashboard() {
                     type="number"
                     value={draft.fees}
                     onChange={(e) => setDraft({ ...draft, fees: Number(e.target.value) })}
-                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                   />
                 ) : (
                   <p className="px-3 py-2 text-sm text-white">₹{profile.fees}</p>
@@ -309,7 +311,7 @@ export default function LawyerDashboard() {
                     type="number"
                     value={draft.experienceYears}
                     onChange={(e) => setDraft({ ...draft, experienceYears: Number(e.target.value) })}
-                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                   />
                 ) : (
                   <p className="px-3 py-2 text-sm text-white">{profile.experienceYears} years</p>
@@ -323,7 +325,7 @@ export default function LawyerDashboard() {
                   <input
                     value={draft.address.line1}
                     onChange={(e) => setDraft({ ...draft, address: { ...draft.address, line1: e.target.value } })}
-                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                   />
                 ) : (
                   <p className="px-3 py-2 text-sm text-white">{profile.address?.line1 || "—"}</p>
@@ -337,7 +339,7 @@ export default function LawyerDashboard() {
                   <input
                     value={draft.address.line2 || ""}
                     onChange={(e) => setDraft({ ...draft, address: { ...draft.address, line2: e.target.value } })}
-                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                    className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                   />
                 ) : (
                   <p className="px-3 py-2 text-sm text-white">{profile.address?.line2 || "—"}</p>
@@ -353,7 +355,7 @@ export default function LawyerDashboard() {
                   value={draft.description}
                   onChange={(e) => setDraft({ ...draft, description: e.target.value })}
                   rows={4}
-                  className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none resize-none"
+                  className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none resize-none"
                 />
               ) : (
                 <p className="px-3 py-2 text-sm text-white leading-relaxed">{profile.description || "—"}</p>
@@ -367,12 +369,12 @@ export default function LawyerDashboard() {
                 <input
                   value={draft.specialization.join(", ")}
                   onChange={(e) => setDraft({ ...draft, specialization: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
-                  className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                  className="w-full bg-black border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                 />
               ) : (
                 <div className="flex flex-wrap gap-2 px-3 py-2">
                   {profile.specialization.map((s, i) => (
-                    <span key={i} className="bg-indigo-600/20 text-indigo-300 border border-indigo-600/30 px-3 py-1 rounded-full text-xs">
+                    <span key={i} className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-zinc-300">
                       {s}
                     </span>
                   ))}
@@ -387,19 +389,19 @@ export default function LawyerDashboard() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold flex items-center gap-2">
-                <Clock size={20} className="text-indigo-400" /> Weekly Availability
+                <Clock size={20} className="text-white" /> Weekly Availability
               </h2>
               <div className="flex gap-2">
                 <button
                   onClick={addAvailabilitySlot}
-                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-sm font-medium transition"
+                  className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
                 >
                   <Plus size={15} /> Add Day
                 </button>
                 <button
                   onClick={handleSaveAvailability}
                   disabled={isSavingAvail}
-                  className="flex items-center gap-2 bg-green-600 hover:bg-green-500 px-4 py-2 rounded-xl text-sm font-medium transition disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200 disabled:opacity-50"
                 >
                   <Check size={15} /> {isSavingAvail ? "Saving..." : "Save"}
                 </button>
@@ -424,7 +426,7 @@ export default function LawyerDashboard() {
                       <select
                         value={slot.dayOfWeek}
                         onChange={(e) => updateAvailabilitySlot(idx, "dayOfWeek", e.target.value)}
-                        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                       >
                         {DAYS.map((day, i) => (
                           <option key={i} value={i}>{day}</option>
@@ -439,7 +441,7 @@ export default function LawyerDashboard() {
                         type="time"
                         value={slot.startTime}
                         onChange={(e) => updateAvailabilitySlot(idx, "startTime", e.target.value)}
-                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                       />
                     </div>
 
@@ -450,7 +452,7 @@ export default function LawyerDashboard() {
                         type="time"
                         value={slot.endTime}
                         onChange={(e) => updateAvailabilitySlot(idx, "endTime", e.target.value)}
-                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                       />
                     </div>
 
@@ -460,7 +462,7 @@ export default function LawyerDashboard() {
                       <select
                         value={slot.slotDuration}
                         onChange={(e) => updateAvailabilitySlot(idx, "slotDuration", e.target.value)}
-                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                        className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm focus:border-white focus:outline-none"
                       >
                         {[15, 30, 45, 60].map((d) => (
                           <option key={d} value={d}>{d} min</option>
@@ -470,7 +472,7 @@ export default function LawyerDashboard() {
 
                     <button
                       onClick={() => removeAvailabilitySlot(idx)}
-                      className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition mt-4"
+                      className="mt-4 rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-white"
                     >
                       <Trash2 size={16} />
                     </button>

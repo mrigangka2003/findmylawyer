@@ -69,8 +69,8 @@ export default function ForgotPassword() {
         </button>
 
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-indigo-600/20 border border-indigo-600/30 rounded-xl flex items-center justify-center">
-            <KeyRound size={18} className="text-indigo-400" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10">
+            <KeyRound size={18} className="text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">
@@ -84,7 +84,7 @@ export default function ForgotPassword() {
 
         {done ? (
           <div className="text-center py-6">
-            <CheckCircle2 size={48} className="text-green-400 mx-auto mb-3" />
+            <CheckCircle2 size={48} className="mx-auto mb-3 text-white" />
             <p className="text-white font-semibold">Password reset successfully!</p>
             <p className="text-zinc-400 text-sm mt-1">Redirecting to login...</p>
           </div>
@@ -98,7 +98,7 @@ export default function ForgotPassword() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="your@email.com"
-                className="w-full bg-black border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-indigo-500 focus:outline-none transition"
+                className="w-full rounded-xl border border-zinc-700 bg-black px-4 py-3 text-white placeholder-zinc-600 outline-none transition focus:border-white"
               />
             </div>
             <button
@@ -119,10 +119,10 @@ export default function ForgotPassword() {
                 onChange={(e) => setResetToken(e.target.value)}
                 required
                 placeholder="Paste the reset token here"
-                className="w-full bg-black border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 font-mono text-xs focus:border-indigo-500 focus:outline-none transition"
+                className="w-full rounded-xl border border-zinc-700 bg-black px-4 py-3 font-mono text-xs text-white placeholder-zinc-600 outline-none transition focus:border-white"
               />
               {resetToken && (
-                <p className="text-xs text-green-400 mt-1">Token pre-filled from server response.</p>
+                <p className="mt-1 text-xs text-zinc-400">Token pre-filled from server response.</p>
               )}
             </div>
             <div>
@@ -133,7 +133,7 @@ export default function ForgotPassword() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 placeholder="At least 6 characters"
-                className="w-full bg-black border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-indigo-500 focus:outline-none transition"
+                className="w-full rounded-xl border border-zinc-700 bg-black px-4 py-3 text-white placeholder-zinc-600 outline-none transition focus:border-white"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export default function ForgotPassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 placeholder="Repeat new password"
-                className="w-full bg-black border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-indigo-500 focus:outline-none transition"
+                className="w-full rounded-xl border border-zinc-700 bg-black px-4 py-3 text-white placeholder-zinc-600 outline-none transition focus:border-white"
               />
             </div>
             <button

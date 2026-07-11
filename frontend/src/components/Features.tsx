@@ -1,4 +1,4 @@
-import { Shield, Clock, Users, CheckCircle, type LucideIcon } from "lucide-react";
+import { BrainCircuit, CalendarCheck2, Scale, ShieldCheck, type LucideIcon } from "lucide-react";
 
 type Feature = {
   Icon: LucideIcon;
@@ -10,56 +10,59 @@ type Feature = {
 // This avoids creating new React elements at module-level on every evaluation.
 const features: Feature[] = [
   {
-    Icon: Shield,
-    title: "Verified Legal Experts",
+    Icon: BrainCircuit,
+    title: "Tell us the context",
     description:
-      "Every lawyer on our platform undergoes a strict verification process to ensure top-tier legal representation.",
+      "Describe your issue in everyday language. There is no legal vocabulary test at the door.",
   },
   {
-    Icon: Clock,
-    title: "24/7 Availability",
+    Icon: Scale,
+    title: "Get a focused shortlist",
     description:
-      "Book consultations at your convenience. Our platform allows you to schedule appointments anytime, anywhere.",
+      "AI helps weigh the legal area, city, experience and availability to make the search less noisy.",
   },
   {
-    Icon: Users,
-    title: "Client-Centric Approach",
+    Icon: ShieldCheck,
+    title: "Review with confidence",
     description:
-      "We prioritize your needs, connecting you with professionals who listen, understand, and fight for your rights.",
+      "Compare verified profiles, practice areas and consultation fees before you decide who to contact.",
   },
   {
-    Icon: CheckCircle,
-    title: "Transparent Pricing",
+    Icon: CalendarCheck2,
+    title: "Book when it suits you",
     description:
-      "No hidden fees. You see the consultation fees upfront before booking any appointment.",
+      "Choose a time directly from a lawyer's availability and keep every appointment in one place.",
   },
 ];
 
 const Features = () => {
   return (
-    <section className="py-24 bg-zinc-900 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-6">
-            Why Choose FindMyLawyer?
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            We bridge the gap between you and exceptional legal counsel, making
-            the process of finding a lawyer simple, secure, and transparent.
+    <section id="how-it-works" className="border-b border-white/10 bg-[#0d0d0d] py-24">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mb-14 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <p className="eyebrow mb-4">How it works</p>
+            <h2 className="max-w-xl font-display text-4xl leading-none text-white md:text-5xl">
+              Finding counsel should feel considered, not overwhelming.
+            </h2>
+          </div>
+          <p className="max-w-xs text-sm leading-6 text-zinc-500 md:text-right">
+            A clear path from a legal question to a person you can trust with it.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map(({ Icon, title, description }) => (
+        <div className="grid divide-y divide-white/10 border-y border-white/10 md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-4">
+          {features.map(({ Icon, title, description }, index) => (
             <div
               key={title}
-              className="bg-black border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all duration-300 hover:-translate-y-2 group"
+              className="group min-h-[250px] p-7 transition-colors hover:bg-white hover:text-black lg:p-8"
             >
-              <div className="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
-                <Icon className="w-8 h-8 text-white" />
+              <div className="mb-14 flex items-center justify-between">
+                <span className="font-display text-2xl text-zinc-600 group-hover:text-zinc-500">0{index + 1}</span>
+                <Icon className="h-5 w-5 text-zinc-400 transition group-hover:text-black" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">{title}</h3>
-              <p className="text-gray-400 leading-relaxed">{description}</p>
+              <h3 className="mb-3 text-lg font-semibold text-white group-hover:text-black">{title}</h3>
+              <p className="text-sm leading-6 text-zinc-500 group-hover:text-zinc-700">{description}</p>
             </div>
           ))}
         </div>

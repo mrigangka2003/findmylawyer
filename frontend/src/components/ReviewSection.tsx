@@ -103,7 +103,7 @@ export default function ReviewSection({ lawyerId }: Props) {
           size={interactive ? 22 : 14}
           className={`transition-colors ${
             s <= (interactive ? (hoveredStar || value) : value)
-              ? "text-yellow-400 fill-yellow-400"
+              ? "fill-white text-white"
               : "text-zinc-600"
           } ${interactive ? "cursor-pointer" : ""}`}
           onClick={interactive ? () => setRating(s) : undefined}
@@ -126,7 +126,7 @@ export default function ReviewSection({ lawyerId }: Props) {
                 <Star
                   key={s}
                   size={14}
-                  className={s <= Math.round(avgRating) ? "text-yellow-400 fill-yellow-400" : "text-zinc-600"}
+                  className={s <= Math.round(avgRating) ? "fill-white text-white" : "text-zinc-600"}
                 />
               ))}
             </div>
@@ -195,7 +195,7 @@ export default function ReviewSection({ lawyerId }: Props) {
                 {(user?.id === review.userId?._id || user?.role === "admin") && (
                   <button
                     onClick={() => handleDelete(review._id)}
-                    className="text-zinc-600 hover:text-red-400 p-1 rounded transition"
+                    className="rounded p-1 text-zinc-600 transition hover:text-white"
                   >
                     <Trash2 size={14} />
                   </button>

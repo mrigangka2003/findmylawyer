@@ -74,9 +74,9 @@ const RelatedLawyers = ({
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
                             {/* Status Badge */}
-                            <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-2.5 py-1">
-                                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                                <span className="text-green-400 text-xs font-medium">
+                            <div className="absolute right-3 top-3 flex items-center gap-1.5 border border-white/25 bg-black/65 px-2.5 py-1 backdrop-blur-sm">
+                                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span>
+                                <span className="text-xs font-medium text-white">
                                     Available
                                 </span>
                             </div>

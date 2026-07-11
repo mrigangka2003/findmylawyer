@@ -160,7 +160,7 @@ const Appointment = () => {
                         </p>
 
                         <div className="mb-6">
-                            <span className="inline-block bg-green-600 text-white text-sm px-4 py-1.5 rounded-full">
+                            <span className="inline-block border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white">
                                 {lawyerInfo.experience} Years Experience
                             </span>
                         </div>
@@ -182,9 +182,9 @@ const Appointment = () => {
                                 {lawyerInfo.fees}
                             </span>
                         </p>
-                        {lawyerInfo.rating > 0 && (
+                        {(lawyerInfo.rating ?? 0) > 0 && (
                             <div className="flex items-center gap-1.5 mt-2">
-                                <Star size={15} className="text-yellow-400 fill-yellow-400" />
+                                <Star size={15} className="fill-white text-white" />
                                 <span className="text-sm text-zinc-300">{lawyerInfo.rating} rating</span>
                             </div>
                         )}

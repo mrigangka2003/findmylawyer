@@ -24,11 +24,11 @@ type Booking = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  confirmed: "bg-green-500/20 text-green-400 border border-green-500/30",
-  accepted:  "bg-green-500/20 text-green-400 border border-green-500/30",
-  cancelled: "bg-red-500/20 text-red-400 border border-red-500/30",
-  rejected:  "bg-red-500/20 text-red-400 border border-red-500/30",
-  pending:   "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+  confirmed: "border border-white/30 bg-white/10 text-white",
+  accepted:  "border border-white/30 bg-white/10 text-white",
+  cancelled: "border border-white/15 bg-zinc-800 text-zinc-300",
+  rejected:  "border border-white/15 bg-zinc-800 text-zinc-300",
+  pending:   "border border-white/20 bg-black text-zinc-300",
 };
 
 const MyAppointments = () => {
@@ -149,7 +149,7 @@ const MyAppointments = () => {
                       ? booking.userId?.name
                       : booking.lawyerId?.name}
                   </h2>
-                  <p className="text-indigo-400 text-xs capitalize">
+                  <p className="text-xs capitalize text-zinc-400">
                     {user?.role === "lawyer" ? "Client" : "Lawyer"}
                   </p>
                 </div>
@@ -163,7 +163,7 @@ const MyAppointments = () => {
                     {booking.status}
                   </span>
                   {booking.paymentId && (
-                    <span className="ml-2 flex items-center gap-0.5 text-xs text-green-400">
+                    <span className="ml-2 flex items-center gap-0.5 text-xs text-zinc-300">
                       <IndianRupee size={10} /> Paid
                     </span>
                   )}
@@ -183,13 +183,13 @@ const MyAppointments = () => {
                   <>
                     <button
                       onClick={() => openPaymentModal(booking)}
-                      className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 transition"
+                      className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5 text-xs font-medium text-black transition hover:bg-zinc-200"
                     >
                       <CreditCard size={13} /> Pay
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(booking._id, "cancelled")}
-                      className="flex items-center gap-1.5 rounded-xl bg-red-600/70 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 transition"
+                      className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700"
                     >
                       <XCircle size={13} /> Cancel
                     </button>
@@ -200,13 +200,13 @@ const MyAppointments = () => {
                   <>
                     <button
                       onClick={() => handleUpdateStatus(booking._id, "confirmed")}
-                      className="flex items-center gap-1.5 rounded-xl bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-500 transition"
+                      className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5 text-xs font-medium text-black transition hover:bg-zinc-200"
                     >
                       <CheckCircle size={13} /> Confirm
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(booking._id, "cancelled")}
-                      className="flex items-center gap-1.5 rounded-xl bg-red-600/70 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 transition"
+                      className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700"
                     >
                       <XCircle size={13} /> Reject
                     </button>
